@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PosturaSmart - Sistema Completo de Gestão Avícola</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex">
+
+  <!-- MENU LATERAL (SIDEBAR) -->
+  <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex shrink-0">
+    <div class="p-6">
+      <div class="flex items-center gap-2 mb-8">
+        <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold">P</div>
+        <div>
+          <h1 class="font-bold text-lg text-emerald-900 leading-tight">PosturaSmart</h1>
+          <p class="text-xs text-slate-400">Gestão Avícola Web</p>
+        </div>
+      </div>
+
+      <nav class="space-y-1">
+        <button onclick="navigate('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-emerald-700 bg-emerald-50">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+        </button>
+        <button onclick="navigate('coleta')" id="nav-coleta" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+          <i data-lucide="egg" class="w-4 h-4"></i> Coleta de Ovos
+        </button>
+        <button onclick="navigate('mortalidade')" id="nav-mortalidade" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+          <i data-lucide="heart-pulse" class="w-4 h-4"></i> Mortalidade
+        </button>
+        <button onclick="navigate('racao')" id="nav-racao" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+          <i data-lucide="wheat" class="w-4 h-4"></i> Estoque de Ração
+        </button>
+        <button onclick="navigate('vacinacao')" id="nav-vacinacao" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+          <i data-lucide="syringe" class="w-4 h-4"></i> Vacinação
+        </button>
+        <button onclick="navigate('clientes')" id="nav-clientes" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+          <i data-lucide="users" class="w-4 h-4"></i> Clientes
+        </button>
+        <button onclick="navigate('vendas')" id="nav-vendas" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+          <i data-lucide="dollar-sign" class="w-4 h-4"></i> Vendas
+        </button>
+        <button onclick="navigate('configuracoes')" id="nav-configuracoes" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+          <i data-lucide="settings" class="w-4 h-4"></i> Configurações
+        </button>
+      </nav>
+    </div>
+
+    <div class="p-4 border-t border-slate-100">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-semibold flex items-center justify-center text-sm">I</div>
+        <div>
+          <p class="text-sm font-medium text-slate-700">Italo</p>
+          <p class="text-xs text-slate-400">Granja São João</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL (MÓDULOS) -->
+  <main class="flex-1 p-8 overflow-y-auto">
+
+    <!-- 1. DASHBOARD -->
+    <section id="view-dashboard" class="space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900">Visão Geral da Granja</h2>
+        <p class="text-slate-500 text-sm">Indicadores e resumo operacional em tempo real.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-medium text-slate-500 mb-1">Plantel Ativo</p>
+          <h3 id="dash-plantel" class="text-2xl font-bold text-slate-800">500</h3>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-medium text-slate-500 mb-1">Produção de Hoje</p>
+          <h3 id="dash-ovos-hoje" class="text-2xl font-bold text-emerald-600">0 ovos</h3>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-medium text-slate-500 mb-1">Taxa de Postura Média</p>
+          <h3 id="dash-postura-pct" class="text-2xl font-bold text-slate-800">0.0%</h3>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-medium text-slate-500 mb-1">Faturamento Vendas</p>
+          <h3 id="dash-vendas-total" class="text-2xl font-bold text-slate-800">R$ 0,00</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. COLETA DE OVOS -->
+    <section id="view-coleta" class="space-y-6 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Coleta de Ovos</h2>
+          <p class="text-slate-500 text-sm">Registre a produção diária por lote e acompanhe a taxa de postura.</p>
+        </div>
+        <button onclick="openModal('modal-coleta')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i> Nova Coleta
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-slate-500 text-xs uppercase font-medium border-b border-slate-100">
+              <th class="p-4">Data/Hora</th>
+              <th class="p-4">Ovos Bons</th>
+              <th class="p-4">Trincados/Sujos</th>
+              <th class="p-4">Descarte</th>
+              <th class="p-4">Total</th>
+              <th class="p-4">Taxa Postura</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-coletas" class="divide-y divide-slate-100 text-sm text-slate-700"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3. MORTALIDADE -->
+    <section id="view-mortalidade" class="space-y-6 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Mortalidade e Baixas</h2>
+          <p class="text-slate-500 text-sm">Controle as baixas do plantel para recalcular o estoque de aves.</p>
+        </div>
+        <button onclick="openModal('modal-mortalidade')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i> Registrar Baixa
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <ul id="lista-mortalidade" class="divide-y divide-slate-100"></ul>
+      </div>
+    </section>
+
+    <!-- 4. ESTOQUE DE RAÇÃO -->
+    <section id="view-racao" class="space-y-6 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Estoque de Ração</h2>
+          <p class="text-slate-500 text-sm">Gerencie as entradas e saídas de alimento para o plantel.</p>
+        </div>
+        <button onclick="openModal('modal-racao')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i> Lançar Movimentação
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+        <div class="flex items-center justify-between border-b pb-4 border-slate-100">
+          <div>
+            <p class="text-xs font-medium text-slate-400">Estoque Atual Disponível</p>
+            <h3 id="racao-saldo" class="text-3xl font-bold text-slate-800">0.0 kg</h3>
+          </div>
+        </div>
+        <h4 class="font-semibold text-slate-700 text-sm">Histórico de Movimentações</h4>
+        <ul id="lista-racao" class="divide-y divide-slate-100 text-sm"></ul>
+      </div>
+    </section>
+
+    <!-- 5. VACINAÇÃO -->
+    <section id="view-vacinacao" class="space-y-6 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Cronograma Sanitário</h2>
+          <p class="text-slate-500 text-sm">Acompanhe as vacinas programadas para manter o lote imune.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <div id="cronograma-vacinas" class="space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- 6. CLIENTES -->
+    <section id="view-clientes" class="space-y-6 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Gestão de Clientes</h2>
+          <p class="text-slate-500 text-sm">Cadastre seus compradores de atacado, varejo e consumidor final.</p>
+        </div>
+        <button onclick="openModal('modal-cliente')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i> Novo Cliente
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="cards-clientes"></div>
+    </section>
+
+    <!-- 7. VENDAS -->
+    <section id="view-vendas" class="space-y-6 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Vendas</h2>
+          <p class="text-slate-500 text-sm">Registre saídas de caixas e dúzias de ovos comercializados.</p>
+        </div>
+        <button onclick="openModal('modal-venda')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i> Nova Venda
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-slate-500 text-xs uppercase font-medium border-b border-slate-100">
+              <th class="p-4">Data</th>
+              <th class="p-4">Cliente</th>
+              <th class="p-4">Quantidade (Dúzias)</th>
+              <th class="p-4">Valor Total</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-vendas" class="divide-y divide-slate-100 text-sm text-slate-700"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 8. CONFIGURAÇÕES -->
+    <section id="view-configuracoes" class="space-y-6 hidden">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900">Configurações da Conta</h2>
+        <p class="text-slate-500 text-sm">Ajuste os dados da sua propriedade e preferências de alertas.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 max-w-xl space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Nome do Produtor</label>
+          <input type="text" id="cfg-nome" value="Italo" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Nome da Propriedade / Granja</label>
+          <input type="text" id="cfg-granja" value="Granja São João" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Tipo de Criação</label>
+          <select id="cfg-criacao" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+            <option value="Caipira">Caipira / Free-Range</option>
+            <option value="Cage-free">Cage-free</option>
+            <option value="Convencional">Convencional</option>
+          </select>
+        </div>
+        <button onclick="alert('Configurações salvas com sucesso!')" class="bg-emerald-600 text-white font-medium px-4 py-2 rounded-xl text-sm">Salvar Alterações</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAIS DE CADASTRO -->
+
+  <!-- Modal Coleta -->
+  <div id="modal-coleta" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border border-slate-100 space-y-4">
+      <h3 class="text-lg font-bold text-slate-800">Nova Coleta de Ovos</h3>
+      <form onsubmit="handleSalvarColeta(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Ovos Bons (Aproveitáveis) *</label>
+          <input type="number" id="col-bons" min="0" value="0" required class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Ovos Trincados / Sujos</label>
+          <input type="number" id="col-trincados" min="0" value="0" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Ovos Descartados</label>
+          <input type="number" id="col-descarte" min="0" value="0" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-coleta')" class="px-4 py-2 rounded-xl text-sm border border-slate-200 text-slate-600">Cancelar</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-sm bg-emerald-600 text-white font-medium">Salvar Coleta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Mortalidade -->
+  <div id="modal-mortalidade" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border border-slate-100 space-y-4">
+      <h3 class="text-lg font-bold text-slate-800">Registrar Baixa</h3>
+      <form onsubmit="handleSalvarMortalidade(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Quantidade de aves *</label>
+          <input type="number" id="mort-qtd" min="1" value="1" required class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Causa</label>
+          <select id="mort-causa" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+            <option value="Desconhecida">Desconhecida</option>
+            <option value="Doença">Doença</option>
+            <option value="Predação">Predação</option>
+            <option value="Estresse térmico">Estresse térmico</option>
+            <option value="Outros">Outros</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-mortalidade')" class="px-4 py-2 rounded-xl text-sm border border-slate-200 text-slate-600">Cancelar</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-sm bg-emerald-600 text-white font-medium">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Ração -->
+  <div id="modal-racao" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border border-slate-100 space-y-4">
+      <h3 class="text-lg font-bold text-slate-800">Movimentação de Ração</h3>
+      <form onsubmit="handleSalvarRacao(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Tipo de Operação</label>
+          <select id="racao-tipo" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+            <option value="ENTRADA">Entrada (+ Compra)</option>
+            <option value="SAIDA">Saída (- Consumo diário)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Quantidade (kg) *</label>
+          <input type="number" id="racao-qtd" step="0.1" min="0.1" required class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-racao')" class="px-4 py-2 rounded-xl text-sm border border-slate-200 text-slate-600">Cancelar</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-sm bg-emerald-600 text-white font-medium">Lançar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Cliente -->
+  <div id="modal-cliente" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border border-slate-100 space-y-4">
+      <h3 class="text-lg font-bold text-slate-800">Novo Cliente</h3>
+      <form onsubmit="handleSalvarCliente(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Nome / Razão Social *</label>
+          <input type="text" id="cli-nome" required class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Telefone / WhatsApp</label>
+          <input type="text" id="cli-tel" placeholder="(75) 99999-9999" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Tipo</label>
+          <select id="cli-tipo" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+            <option value="Atacado">Atacado</option>
+            <option value="Varejo">Varejo</option>
+            <option value="Consumidor Final">Consumidor Final</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-cliente')" class="px-4 py-2 rounded-xl text-sm border border-slate-200 text-slate-600">Cancelar</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-sm bg-emerald-600 text-white font-medium">Cadastrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Venda -->
+  <div id="modal-venda" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border border-slate-100 space-y-4">
+      <h3 class="text-lg font-bold text-slate-800">Nova Venda</h3>
+      <form onsubmit="handleSalvarVenda(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Cliente *</label>
+          <input type="text" id="venda-cliente" placeholder="Nome do cliente" required class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Quantidade (Dúzias) *</label>
+          <input type="number" id="venda-qtd" min="1" required class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 mb-1">Valor Total (R$) *</label>
+          <input type="number" step="0.01" id="venda-valor" placeholder="0.00" required class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-venda')" class="px-4 py-2 rounded-xl text-sm border border-slate-200 text-slate-600">Cancelar</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-sm bg-emerald-600 text-white font-medium">Finalizar Venda</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FIREBASE ENGINE & LÓGICA DO SISTEMA -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDD-6ZugbKVmSfmF76iBrXqmOD7ZAYyo24",
+      authDomain: "granja-5d0b8.firebaseapp.com",
+      projectId: "granja-5d0b8",
+      storageBucket: "granja-5d0b8.firebasestorage.app",
+      messagingSenderId: "140023118643",
+      appId: "1:140023118643:web:29b41055a6d3a6fd58dc46"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const PRODUTOR_ID = "produtor_italo";
+
+    // Coleções no Firestore
+    const coletasRef = collection(db, "produtores", PRODUTOR_ID, "coletas");
+    const mortalidadeRef = collection(db, "produtores", PRODUTOR_ID, "mortalidade");
+    const racaoRef = collection(db, "produtores", PRODUTOR_ID, "racao");
+    const clientesRef = collection(db, "produtores", PRODUTOR_ID, "clientes");
+    const vendasRef = collection(db, "produtores", PRODUTOR_ID, "vendas");
+
+    lucide.createIcons();
+
+    // Roteador de Navegação (SPA)
+    window.navigate = function(viewName) {
+      document.querySelectorAll('section[id^="view-"]').forEach(sec => sec.classList.add('hidden'));
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('bg-emerald-50', 'text-emerald-700');
+        btn.classList.add('text-slate-600');
+      });
+
+      document.getElementById(`view-${viewName}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`nav-${viewName}`);
+      if(activeBtn) {
+        activeBtn.classList.add('bg-emerald-50', 'text-emerald-700');
+      }
+    };
+
+    window.openModal = id => document.getElementById(id).classList.remove('hidden');
+    window.closeModal = id => document.getElementById(id).classList.add('hidden');
+
+    let totalPlantel = 500;
+
+    // Listener Realtime: Coletas
+    onSnapshot(coletasRef, (snapshot) => {
+      const tabela = document.getElementById('tabela-coletas');
+      tabela.innerHTML = '';
+      let totalOvosHoje = 0;
+      let somaTotalOvos = 0;
+      const hojeStr = new Date().toLocaleDateString('pt-BR');
+
+      snapshot.forEach(doc => {
+        const c = doc.data();
+        somaTotalOvos += c.total;
+        if(c.data === hojeStr) totalOvosHoje += c.total;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-4">${c.data} ${c.hora}</td>
+          <td class="p-4 font-semibold text-emerald-600">${c.bons}</td>
+          <td class="p-4 text-amber-600">${c.trincados}</td>
+          <td class="p-4 text-rose-600">${c.descarte}</td>
+          <td class="p-4 font-bold">${c.total}</td>
+          <td class="p-4">${((c.total / totalPlantel) * 100).toFixed(1)}%</td>
+        `;
+        tabela.appendChild(tr);
+      });
+
+      document.getElementById('dash-ovos-hoje').innerText = `${totalOvosHoje} ovos`;
+      const taxaMedia = totalPlantel > 0 ? ((totalOvosHoje / totalPlantel) * 100).toFixed(1) : 0;
+      document.getElementById('dash-postura-pct').innerText = `${taxaMedia}%`;
+    });
+
+    // Listener Realtime: Mortalidade
+    onSnapshot(mortalidadeRef, (snapshot) => {
+      const lista = document.getElementById('lista-mortalidade');
+      lista.innerHTML = '';
+      let baixas = 0;
+
+      snapshot.forEach(doc => {
+        const m = doc.data();
+        baixas += m.quantidade;
+        const li = document.createElement('li');
+        li.className = 'p-4 flex items-center justify-between text-sm';
+        li.innerHTML = `
+          <div>
+            <p class="font-medium text-slate-800">${m.causa}</p>
+            <p class="text-xs text-slate-400">${m.data}</p>
+          </div>
+          <span class="px-2.5 py-1 bg-red-50 text-red-600 font-semibold rounded-full text-xs">-${m.quantidade} ave(s)</span>
+        `;
+        lista.appendChild(li);
+      });
+
+      totalPlantel = 500 - baixas;
+      document.getElementById('dash-plantel').innerText = totalPlantel;
+    });
+
+    // Listener Realtime: Ração
+    onSnapshot(racaoRef, (snapshot) => {
+      const lista = document.getElementById('lista-racao');
+      lista.innerHTML = '';
+      let saldo = 0;
+
+      snapshot.forEach(doc => {
+        const r = doc.data();
+        if(r.tipo === 'ENTRADA') saldo += r.quantidade;
+        else saldo -= r.quantidade;
+
+        const li = document.createElement('li');
+        li.className = 'p-3 flex justify-between items-center';
+        li.innerHTML = `
+          <span>${r.data} - ${r.tipo}</span>
+          <span class="font-bold ${r.tipo === 'ENTRADA' ? 'text-emerald-600' : 'text-amber-600'}">
+            ${r.tipo === 'ENTRADA' ? '+' : '-'}${r.quantidade} kg
+          </span>
+        `;
+        lista.appendChild(li);
+      });
+
+      document.getElementById('racao-saldo').innerText = `${saldo.toFixed(1)} kg`;
+    });
+
+    // Listener Realtime: Clientes
+    onSnapshot(clientesRef, (snapshot) => {
+      const container = document.getElementById('cards-clientes');
+      container.innerHTML = '';
+
+      snapshot.forEach(doc => {
+        const c = doc.data();
+        const div = document.createElement('div');
+        div.className = 'bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2';
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-slate-800">${c.nome}</h4>
+            <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-xs">${c.tipo}</span>
+          </div>
+          <p class="text-xs text-slate-400">${c.telefone || 'Sem telefone'}</p>
+        `;
+        container.appendChild(div);
+      });
+    });
+
+    // Listener Realtime: Vendas
+    onSnapshot(vendasRef, (snapshot) => {
+      const tabela = document.getElementById('tabela-vendas');
+      tabela.innerHTML = '';
+      let totalVendas = 0;
+
+      snapshot.forEach(doc => {
+        const v = doc.data();
+        totalVendas += v.valorTotal;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-4 text-slate-400">${v.data}</td>
+          <td class="p-4 font-medium text-slate-800">${v.cliente}</td>
+          <td class="p-4">${v.quantidade} dz</td>
+          <td class="p-4 font-semibold text-emerald-600">R$ ${v.valorTotal.toFixed(2)}</td>
+        `;
+        tabela.appendChild(tr);
+      });
+
+      document.getElementById('dash-vendas-total').innerText = `R$ ${totalVendas.toFixed(2)}`;
+    });
+
+    // Cronograma de Vacinação Padrão (Carregado na view)
+    const vacinasPadrao = [
+      { dia: "1º Dia", vacina: "Marek + Bouba Aviar", via: "Subcutânea", status: "Concluída" },
+      { dia: "7º Dia", vacina: "Newcastle + Bronquite", via: "Ocular / Nasal", status: "Concluída" },
+      { dia: "14º Dia", vacina: "Gumboro (1ª dose)", via: "Água de bebida", status: "Pendente" },
+      { dia: "35º Dia", vacina: "Bouba Aviar (Reforço)", via: "Membrana da asa", status: "Pendente" }
+    ];
+
+    const boxVacinas = document.getElementById('cronograma-vacinas');
+    vacinasPadrao.forEach(v => {
+      const item = document.createElement('div');
+      item.className = 'flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50 text-sm';
+      item.innerHTML = `
+        <div>
+          <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md mr-2">${v.dia}</span>
+          <strong class="text-slate-800">${v.vacina}</strong>
+          <span class="text-xs text-slate-400 block sm:inline"> Via: ${v.via}</span>
+        </div>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${v.status === 'Concluída' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${v.status}</span>
+      `;
+      boxVacinas.appendChild(item);
+    });
+
+    // Handlers para os formulários
+    window.handleSalvarColeta = async function(e) {
+      e.preventDefault();
+      const bons = Number(document.getElementById('col-bons').value);
+      const trincados = Number(document.getElementById('col-trincados').value);
+      const descarte = Number(document.getElementById('col-descarte').value);
+
+      await addDoc(coletasRef, {
+        bons, trincados, descarte,
+        total: bons + trincados + descarte,
+        data: new Date().toLocaleDateString('pt-BR'),
+        hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+      closeModal('modal-coleta');
+    };
+
+    window.handleSalvarMortalidade = async function(e) {
+      e.preventDefault();
+      await addDoc(mortalidadeRef, {
+        quantidade: Number(document.getElementById('mort-qtd').value),
+        causa: document.getElementById('mort-causa').value,
+        data: new Date().toLocaleDateString('pt-BR')
+      });
+      closeModal('modal-mortalidade');
+    };
+
+    window.handleSalvarRacao = async function(e) {
+      e.preventDefault();
+      await addDoc(racaoRef, {
+        tipo: document.getElementById('racao-tipo').value,
+        quantidade: Number(document.getElementById('racao-qtd').value),
+        data: new Date().toLocaleDateString('pt-BR')
+      });
+      closeModal('modal-racao');
+    };
+
+    window.handleSalvarCliente = async function(e) {
+      e.preventDefault();
+      await addDoc(clientesRef, {
+        nome: document.getElementById('cli-nome').value,
+        telefone: document.getElementById('cli-tel').value,
+        tipo: document.getElementById('cli-tipo').value
+      });
+      closeModal('modal-cliente');
+    };
+
+    window.handleSalvarVenda = async function(e) {
+      e.preventDefault();
+      await addDoc(vendasRef, {
+        cliente: document.getElementById('venda-cliente').value,
+        quantidade: Number(document.getElementById('venda-qtd').value),
+        valorTotal: Number(document.getElementById('venda-valor').value),
+        data: new Date().toLocaleDateString('pt-BR')
+      });
+      closeModal('modal-venda');
+    };
+  </script>
+</body>
+</html>

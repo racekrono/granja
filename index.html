@@ -516,19 +516,214 @@
     </section>
 
     <!-- PÁGINA: PRODUÇÃO -->
-    <section id="view-producao" class="view-page hidden space-y-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-2xl font-extrabold text-[#064e3b]">Produção</h2>
-          <p class="text-xs text-slate-400">Registro diário de postura de ovos</p>
+    <section id="view-producao" class="view-page hidden space-y-5">
+
+      <!-- ESTADO 1: LISTA VAZIA DE PRODUÇÃO -->
+      <div id="producao-empty-state" class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-extrabold text-[#064e3b]">Produção de Ovos</h2>
+            <p class="text-xs text-slate-400">Registro e histórico de produção</p>
+          </div>
+          <button onclick="showProducaoForm()" class="bg-[#064e3b] hover:bg-emerald-800 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
+            <i data-lucide="plus" class="w-4 h-4"></i> Registrar Produção
+          </button>
         </div>
-        <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
-          <i data-lucide="plus" class="w-4 h-4"></i> Registrar Coleta
-        </button>
+
+        <div class="bg-white border border-slate-200 rounded-2xl py-20 px-4 text-center flex flex-col items-center justify-center space-y-3 shadow-sm min-h-[400px]">
+          <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+            <span class="text-3xl font-light text-slate-400">0</span>
+          </div>
+          <h3 class="font-bold text-slate-800 text-base">Nenhuma produção registrada</h3>
+          <p class="text-xs text-slate-400 max-w-sm">Comece a registrar a produção diária de ovos para acompanhar o desempenho dos seus galpões.</p>
+          <button onclick="showProducaoForm()" class="mt-2 bg-[#064e3b] hover:bg-emerald-800 text-white text-xs font-semibold px-5 py-2.5 rounded-lg shadow-sm">
+            Registrar Primeira Produção
+          </button>
+        </div>
       </div>
-      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-        <p class="text-xs text-slate-500">Tabela de registros de postura em breve...</p>
+
+      <!-- ESTADO 2: FORMULÁRIO (NOVO REGISTRO OU EDIÇÃO) -->
+      <div id="producao-form-state" class="hidden space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 id="producao-form-title" class="text-2xl font-extrabold text-[#064e3b]">Registrar Produção</h2>
+            <p id="producao-form-sub" class="text-xs text-slate-400">Registre a produção diária ou por período (retroativo)</p>
+          </div>
+          <button id="btn-voltar-producao" onclick="cancelarFormProducao()" class="hidden text-xs font-semibold text-slate-600 hover:text-emerald-700 flex items-center gap-1">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar
+          </button>
+        </div>
+
+        <!-- Abas de Tipo de Lançamento (visíveis apenas ao criar) -->
+        <div id="producao-tabs-tipo" class="inline-flex bg-slate-100 p-1 rounded-xl gap-1 text-xs font-medium max-w-md w-full">
+          <button type="button" id="tab-diario" onclick="switchProducaoTab('diario')" class="w-1/2 py-1.5 rounded-lg bg-white text-slate-800 font-semibold shadow-sm transition text-center">
+            Lançamento Diário
+          </button>
+          <button type="button" id="tab-periodo" onclick="switchProducaoTab('periodo')" class="w-1/2 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition text-center">
+            Lançamento por Período
+          </button>
+        </div>
+
+        <form onsubmit="handleProducaoSubmit(event)" class="bg-white border border-slate-200 rounded-2xl p-6 max-w-xl space-y-4 shadow-sm">
+          
+          <!-- Seleção de Galpão -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Galpão</label>
+            <select id="input-prod-galpao" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50 text-slate-700 font-medium">
+              <option value="">Selecione o galpão</option>
+            </select>
+          </div>
+
+          <!-- Campos do Modo DIÁRIO / EDIÇÃO -->
+          <div id="campo-data-unica">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Data da Produção</label>
+            <input type="date" id="input-prod-data" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
+          </div>
+
+          <!-- Campos do Modo PERÍODO -->
+          <div id="campos-intervalo-datas" class="hidden grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Data Inicial</label>
+              <input type="date" id="input-prod-dataini" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Data Final</label>
+              <input type="date" id="input-prod-datafim" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
+            </div>
+          </div>
+
+          <!-- Quantidade (Diária ou Total Período) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="wrapper-quantidades">
+            <div>
+              <label id="lbl-qtd-ovos" class="block text-xs font-bold text-slate-700 mb-1">Quantidade de Ovos Produzidos</label>
+              <input type="number" id="input-prod-ovos" placeholder="0" min="0" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
+            </div>
+            <div>
+              <label id="lbl-qtd-quebrados" class="block text-xs font-bold text-slate-700 mb-1">Ovos Quebrados (opcional)</label>
+              <input type="number" id="input-prod-quebrados" placeholder="0" min="0" value="0" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
+            </div>
+          </div>
+
+          <!-- Observações -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Observações (opcional)</label>
+            <textarea id="input-prod-obs" rows="3" placeholder="Ex: Problema com bebedouros, calor intenso..." class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50 resize-none"></textarea>
+          </div>
+
+          <!-- Ações do Formulário -->
+          <div class="flex items-center gap-3 pt-4">
+            <button type="button" onclick="cancelarFormProducao()" class="w-1/2 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition">
+              Cancelar
+            </button>
+            <button type="submit" id="btn-submit-producao" class="w-1/2 py-2.5 text-xs font-semibold text-white bg-[#064e3b] hover:bg-emerald-800 rounded-lg shadow-sm transition">
+              Registrar Produção
+            </button>
+          </div>
+        </form>
       </div>
+
+      <!-- ESTADO 3: LISTAGEM DE HISTÓRICO COM MÉTRICAS -->
+      <div id="producao-list-state" class="hidden space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-extrabold text-[#064e3b]">Produção de Ovos</h2>
+            <p class="text-xs text-slate-400">Registro e histórico de produção</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="exportarExcelProducao()" class="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="download" class="w-4 h-4"></i> Exportar para Excel
+            </button>
+            <button onclick="showProducaoForm()" class="bg-[#064e3b] hover:bg-emerald-800 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
+              <i data-lucide="plus" class="w-4 h-4"></i> Registrar Produção
+            </button>
+          </div>
+        </div>
+
+        <!-- Cards Superior de Métricas de Produção -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Produção (Hoje)</span>
+              <div class="w-6 h-6 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">0</div>
+            </div>
+            <h3 id="card-prod-hoje" class="text-xl font-extrabold text-slate-900">0 <span class="text-xs font-normal text-slate-500">ovos</span></h3>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">7 Dias até Hoje</span>
+              <i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i>
+            </div>
+            <h3 id="card-prod-7dias" class="text-xl font-extrabold text-slate-900">0 <span class="text-xs font-normal text-slate-500">ovos</span></h3>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Média Diária</span>
+              <div class="w-6 h-6 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">O</div>
+            </div>
+            <h3 id="card-prod-media" class="text-xl font-extrabold text-slate-900">0 <span class="text-xs font-normal text-slate-500">ovos</span></h3>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">% de Postura (Hoje)</span>
+              <span class="text-xs font-bold text-emerald-600">%</span>
+            </div>
+            <h3 id="card-prod-postura-hoje" class="text-xl font-extrabold text-emerald-600">0,0%</h3>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">% de Postura do Mês</span>
+              <span class="text-xs font-bold text-emerald-600">%</span>
+            </div>
+            <h3 id="card-prod-postura-mes" class="text-xl font-extrabold text-emerald-600">0,0%</h3>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tendência</span>
+              <i data-lucide="minus" class="w-4 h-4 text-slate-400"></i>
+            </div>
+            <h3 id="card-prod-tendencia" class="text-lg font-extrabold text-slate-700">+0.0%</h3>
+            <p class="text-[9px] text-slate-400 leading-tight">Tendência estável</p>
+          </div>
+        </div>
+
+        <!-- Tabela Histórico de Produção -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden space-y-3 p-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              Histórico de Produção
+            </h4>
+            <div class="inline-flex items-center gap-2 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700">
+              <button onclick="mudarMesProducao(-1)" class="text-slate-400 hover:text-slate-600">&lt;</button>
+              <span id="label-mes-producao">Agosto De 2026</span>
+              <button onclick="mudarMesProducao(1)" class="text-slate-400 hover:text-slate-600">&gt;</button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="text-[11px] font-bold text-slate-400 border-b border-slate-100 uppercase tracking-wider">
+                  <th class="py-2.5 px-3">Data</th>
+                  <th class="py-2.5 px-3">Galpão</th>
+                  <th class="py-2.5 px-3 text-center">Ovos Produzidos</th>
+                  <th class="py-2.5 px-3 text-center">Ovos Quebrados</th>
+                  <th class="py-2.5 px-3">Observações</th>
+                  <th class="py-2.5 px-3 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabela-producao-body" class="divide-y divide-slate-100 text-slate-700">
+                <!-- Linhas inseridas dinamicamente pelo JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </section>
 
     <!-- DEMAIS PÁGINAS -->

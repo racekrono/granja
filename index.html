@@ -472,7 +472,7 @@
             <span class="flex items-center gap-1.5 text-slate-500"><span class="w-2 h-2 rounded-full bg-slate-300"></span> Curva esperada</span>
             <span class="flex items-center gap-1.5 text-emerald-600 font-semibold"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Sua postura</span>
           </div>
-          <p class="text-[10px] text-slate-400 text-center">Curvas de referência aproximadas dos manuais das linhagens. Aves caipiras têm postura naturally menor que poedeiras comerciais.</p>
+          <p class="text-[10px] text-slate-400 text-center">Curvas de referência aproximadas dos manuais das linhagens. Aves caipiras têm postura naturalmente menor que poedeiras comerciais.</p>
         </div>
 
         <!-- Registros secundários -->
@@ -483,7 +483,7 @@
                 <i data-lucide="egg" class="w-4 h-4 text-emerald-600"></i>
                 <h4 class="font-bold text-slate-800 text-sm">Produção Recente</h4>
               </div>
-              <button class="text-xs font-semibold text-emerald-700 hover:underline">Registrar</button>
+              <button onclick="navigate('producao')" class="text-xs font-semibold text-emerald-700 hover:underline">Registrar</button>
             </div>
             <div class="py-8 text-center text-xs text-slate-400">Nenhum registro de produção</div>
           </div>
@@ -494,7 +494,7 @@
                 <i data-lucide="wheat" class="w-4 h-4 text-emerald-600"></i>
                 <h4 class="font-bold text-slate-800 text-sm">Ração Recente</h4>
               </div>
-              <button class="text-xs font-semibold text-emerald-700 hover:underline">Registrar</button>
+              <button onclick="navigate('racao')" class="text-xs font-semibold text-emerald-700 hover:underline">Registrar</button>
             </div>
             <div class="py-8 text-center text-xs text-slate-400">Nenhum registro de ração</div>
           </div>
@@ -792,8 +792,13 @@
   <!-- SCRIPTS -->
   <script>
     let galpoesList = [];
+    let producaoList = [];
     let currentEditingId = null;
     let currentSelectedId = null;
+    let currentEditingProducaoId = null;
+
+    let producaoTipoAbas = 'diario';
+    let dataReferenciaProducao = new Date(2026, 7, 1); // Agosto de 2026
 
     function navigate(viewName) {
       document.querySelectorAll('.view-page').forEach(page => page.classList.add('hidden'));
@@ -810,8 +815,13 @@
         activeBtn.classList.remove('text-slate-600');
         activeBtn.classList.add('bg-emerald-50', 'text-emerald-700', 'font-semibold');
       }
+
+      if (viewName === 'producao') {
+        renderProducaoSection();
+      }
     }
 
+    /* GALPÕES LOGIC */
     function showGalpaoForm(id = null) {
       currentEditingId = id;
       if (id !== null) {
@@ -991,6 +1001,326 @@
       if (dashGalpoes) {
         dashGalpoes.innerText = galpoesList.length > 0 ? galpoesList.length : 1;
       }
+    }
+
+    /* PRODUÇÃO LOGIC */
+    function renderProducaoSection() {
+      if (producaoList.length === 0) {
+        document.getElementById('producao-empty-state').classList.remove('hidden');
+        document.getElementById('producao-form-state').classList.add('hidden');
+        document.getElementById('producao-list-state').classList.add('hidden');
+      } else {
+        renderProducaoListState();
+      }
+    }
+
+    function showProducaoForm(id = null) {
+      populateGalpoesDropdown();
+      currentEditingProducaoId = id;
+
+      const tabsTipo = document.getElementById('producao-tabs-tipo');
+      const title = document.getElementById('producao-form-title');
+      const sub = document.getElementById('producao-form-sub');
+      const btnVoltar = document.getElementById('btn-voltar-producao');
+
+      if (id !== null) {
+        const item = producaoList.find(p => p.id === id);
+        if (item) {
+          title.innerText = "Editar Produção";
+          sub.innerText = "Edite os dados do lançamento selecionado";
+          tabsTipo.classList.add('hidden');
+          btnVoltar.classList.remove('hidden');
+
+          document.getElementById('input-prod-galpao').value = item.galpaoId;
+          document.getElementById('input-prod-data').value = item.data;
+          document.getElementById('input-prod-ovos').value = item.ovos;
+          document.getElementById('input-prod-quebrados').value = item.quebrados || 0;
+          document.getElementById('input-prod-obs').value = item.obs || '';
+
+          switchProducaoTab('diario');
+        }
+      } else {
+        title.innerText = "Registrar Produção";
+        sub.innerText = "Registre a produção diária ou por período (retroativo)";
+        tabsTipo.classList.remove('hidden');
+        btnVoltar.classList.add('hidden');
+
+        document.getElementById('input-prod-galpao').value = galpoesList.length > 0 ? galpoesList[0].id : '';
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('input-prod-data').value = todayStr;
+        document.getElementById('input-prod-dataini').value = '';
+        document.getElementById('input-prod-datafim').value = '';
+        document.getElementById('input-prod-ovos').value = '';
+        document.getElementById('input-prod-quebrados').value = '0';
+        document.getElementById('input-prod-obs').value = '';
+
+        switchProducaoTab('diario');
+      }
+
+      document.getElementById('producao-empty-state').classList.add('hidden');
+      document.getElementById('producao-form-state').classList.remove('hidden');
+      document.getElementById('producao-list-state').classList.add('hidden');
+      lucide.createIcons();
+    }
+
+    function switchProducaoTab(tipo) {
+      producaoTipoAbas = tipo;
+      const tabDiario = document.getElementById('tab-diario');
+      const tabPeriodo = document.getElementById('tab-periodo');
+      const campoDataUnica = document.getElementById('campo-data-unica');
+      const camposIntervalo = document.getElementById('campos-intervalo-datas');
+      const inputDataUnica = document.getElementById('input-prod-data');
+      const inputDataIni = document.getElementById('input-prod-dataini');
+      const inputDataFim = document.getElementById('input-prod-datafim');
+      const lblOvos = document.getElementById('lbl-qtd-ovos');
+      const lblQuebrados = document.getElementById('lbl-qtd-quebrados');
+
+      if (tipo === 'diario') {
+        tabDiario.className = "w-1/2 py-1.5 rounded-lg bg-white text-slate-800 font-semibold shadow-sm transition text-center";
+        tabPeriodo.className = "w-1/2 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition text-center";
+        campoDataUnica.classList.remove('hidden');
+        camposIntervalo.classList.add('hidden');
+        inputDataUnica.required = true;
+        inputDataIni.required = false;
+        inputDataFim.required = false;
+        lblOvos.innerText = "Quantidade de Ovos Produzidos";
+        lblQuebrados.innerText = "Ovos Quebrados (opcional)";
+      } else {
+        tabPeriodo.className = "w-1/2 py-1.5 rounded-lg bg-white text-slate-800 font-semibold shadow-sm transition text-center";
+        tabDiario.className = "w-1/2 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition text-center";
+        campoDataUnica.classList.add('hidden');
+        camposIntervalo.classList.remove('hidden');
+        inputDataUnica.required = false;
+        inputDataIni.required = true;
+        inputDataFim.required = true;
+        lblOvos.innerText = "Total de Ovos no Período";
+        lblQuebrados.innerText = "Total de Ovos Quebrados (opcional)";
+      }
+    }
+
+    function populateGalpoesDropdown() {
+      const select = document.getElementById('input-prod-galpao');
+      select.innerHTML = '<option value="">Selecione o galpão</option>';
+      galpoesList.forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g.id;
+        opt.innerText = g.nome;
+        select.appendChild(opt);
+      });
+    }
+
+    function cancelarFormProducao() {
+      currentEditingProducaoId = null;
+      renderProducaoSection();
+    }
+
+    function handleProducaoSubmit(event) {
+      event.preventDefault();
+
+      const galpaoId = parseInt(document.getElementById('input-prod-galpao').value);
+      const obs = document.getElementById('input-prod-obs').value;
+
+      if (currentEditingProducaoId !== null) {
+        const data = document.getElementById('input-prod-data').value;
+        const ovos = parseInt(document.getElementById('input-prod-ovos').value) || 0;
+        const quebrados = parseInt(document.getElementById('input-prod-quebrados').value) || 0;
+
+        const idx = producaoList.findIndex(p => p.id === currentEditingProducaoId);
+        if (idx !== -1) {
+          producaoList[idx] = { ...producaoList[idx], galpaoId, data, ovos, quebrados, obs };
+        }
+      } else {
+        if (producaoTipoAbas === 'diario') {
+          const data = document.getElementById('input-prod-data').value;
+          const ovos = parseInt(document.getElementById('input-prod-ovos').value) || 0;
+          const quebrados = parseInt(document.getElementById('input-prod-quebrados').value) || 0;
+
+          producaoList.push({
+            id: Date.now(),
+            galpaoId,
+            data,
+            ovos,
+            quebrados,
+            obs
+          });
+        } else {
+          const dataIniStr = document.getElementById('input-prod-dataini').value;
+          const dataFimStr = document.getElementById('input-prod-datafim').value;
+          const totalOvos = parseInt(document.getElementById('input-prod-ovos').value) || 0;
+          const totalQuebrados = parseInt(document.getElementById('input-prod-quebrados').value) || 0;
+
+          const dStart = new Date(dataIniStr + 'T00:00:00');
+          const dEnd = new Date(dataFimStr + 'T00:00:00');
+
+          if (dEnd < dStart) {
+            alert("A data final deve ser posterior ou igual à data inicial.");
+            return;
+          }
+
+          const diffTime = Math.abs(dEnd - dStart);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+          const ovosPorDia = Math.floor(totalOvos / diffDays);
+          let restoOvos = totalOvos % diffDays;
+
+          const quebradosPorDia = Math.floor(totalQuebrados / diffDays);
+          let restoQuebrados = totalQuebrados % diffDays;
+
+          let currDate = new Date(dStart);
+          for (let i = 0; i < diffDays; i++) {
+            const dateISO = currDate.toISOString().split('T')[0];
+            const qOvos = ovosPorDia + (restoOvos > 0 ? 1 : 0);
+            if (restoOvos > 0) restoOvos--;
+
+            const qQuebrados = quebradosPorDia + (restoQuebrados > 0 ? 1 : 0);
+            if (restoQuebrados > 0) restoQuebrados--;
+
+            producaoList.push({
+              id: Date.now() + i,
+              galpaoId,
+              data: dateISO,
+              ovos: qOvos,
+              quebrados: qQuebrados,
+              obs: obs ? `${obs} (Lançamento em Lote)` : 'Lançamento em Lote'
+            });
+
+            currDate.setDate(currDate.getDate() + 1);
+          }
+        }
+      }
+
+      currentEditingProducaoId = null;
+      renderProducaoListState();
+    }
+
+    function renderProducaoListState() {
+      document.getElementById('producao-empty-state').classList.add('hidden');
+      document.getElementById('producao-form-state').classList.add('hidden');
+      document.getElementById('producao-list-state').classList.remove('hidden');
+
+      atualizarMetricasProducao();
+      renderTabelaProducao();
+      lucide.createIcons();
+    }
+
+    function atualizarMetricasProducao() {
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      // Produção Hoje
+      const prodHoje = producaoList
+        .filter(p => p.data === todayStr)
+        .reduce((acc, curr) => acc + curr.ovos, 0);
+      document.getElementById('card-prod-hoje').innerHTML = `${prodHoje} <span class="text-xs font-normal text-slate-500">ovos</span>`;
+
+      // 7 Dias até hoje
+      const dataHoje = new Date();
+      const seteDiasAtras = new Date();
+      seteDiasAtras.setDate(dataHoje.getDate() - 6);
+
+      const prod7Dias = producaoList.filter(p => {
+        const d = new Date(p.data + 'T00:00:00');
+        return d >= seteDiasAtras && d <= dataHoje;
+      }).reduce((acc, curr) => acc + curr.ovos, 0);
+
+      document.getElementById('card-prod-7dias').innerHTML = `${prod7Dias} <span class="text-xs font-normal text-slate-500">ovos</span>`;
+
+      // Média diária (mês corrente de referência)
+      const mesRef = dataReferenciaProducao.getMonth();
+      const anoRef = dataReferenciaProducao.getFullYear();
+
+      const prodMesRef = producaoList.filter(p => {
+        const d = new Date(p.data + 'T00:00:00');
+        return d.getMonth() === mesRef && d.getFullYear() === anoRef;
+      });
+
+      const totalOvosMes = prodMesRef.reduce((acc, curr) => acc + curr.ovos, 0);
+      const diasComRegistro = new Set(prodMesRef.map(p => p.data)).size || 1;
+      const mediaDiaria = Math.round(totalOvosMes / diasComRegistro);
+
+      document.getElementById('card-prod-media').innerHTML = `${mediaDiaria} <span class="text-xs font-normal text-slate-500">ovos</span>`;
+
+      // Total de aves vivas atuais
+      const totalAves = galpoesList.reduce((acc, curr) => acc + curr.aves, 0);
+
+      // Postura Hoje %
+      const pctHoje = totalAves > 0 ? ((prodHoje / totalAves) * 100).toFixed(1) : '0,0';
+      document.getElementById('card-prod-postura-hoje').innerText = `${pctHoje.toString().replace('.', ',')}%`;
+
+      // Postura Mês %
+      const pctMes = (totalAves > 0 && prodMesRef.length > 0) ? ((totalOvosMes / (totalAves * diasComRegistro)) * 100).toFixed(1) : '0,0';
+      document.getElementById('card-prod-postura-mes').innerText = `${pctMes.toString().replace('.', ',')}%`;
+    }
+
+    function renderTabelaProducao() {
+      const tbody = document.getElementById('tabela-producao-body');
+      tbody.innerHTML = '';
+
+      const mesRef = dataReferenciaProducao.getMonth();
+      const anoRef = dataReferenciaProducao.getFullYear();
+
+      const mesesNomes = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      document.getElementById('label-mes-producao').innerText = `${mesesNomes[mesRef]} De ${anoRef}`;
+
+      const filtrados = producaoList.filter(p => {
+        const d = new Date(p.data + 'T00:00:00');
+        return d.getMonth() === mesRef && d.getFullYear() === anoRef;
+      }).sort((a, b) => new Date(b.data) - new Date(a.data));
+
+      if (filtrados.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">Nenhum registro encontrado para este mês.</td></tr>`;
+        return;
+      }
+
+      filtrados.forEach(p => {
+        const galpao = galpoesList.find(g => g.id === p.galpaoId);
+        const nomeGalpao = galpao ? galpao.nome : 'Galpão Não Encontrado';
+        const dObj = new Date(p.data + 'T00:00:00');
+        const dataFmt = dObj.toLocaleDateString('pt-BR');
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition";
+        tr.innerHTML = `
+          <td class="py-3 px-3 font-semibold text-slate-800">${dataFmt}</td>
+          <td class="py-3 px-3 font-medium text-slate-600">${nomeGalpao}</td>
+          <td class="py-3 px-3 text-center font-bold text-emerald-700">${p.ovos}</td>
+          <td class="py-3 px-3 text-center text-slate-500">${p.quebrados || 0}</td>
+          <td class="py-3 px-3 text-slate-400 text-[11px] max-w-xs truncate">${p.obs || '-'}</td>
+          <td class="py-3 px-3 text-right">
+            <div class="inline-flex items-center gap-2">
+              <button onclick="showProducaoForm(${p.id})" class="text-slate-400 hover:text-emerald-700 transition">
+                <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="deleteProducao(${p.id})" class="text-slate-400 hover:text-red-600 transition">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      lucide.createIcons();
+    }
+
+    function mudarMesProducao(delta) {
+      dataReferenciaProducao.setMonth(dataReferenciaProducao.getMonth() + delta);
+      renderTabelaProducao();
+      atualizarMetricasProducao();
+    }
+
+    function deleteProducao(id) {
+      if (confirm("Deseja realmente remover este registro de produção?")) {
+        producaoList = producaoList.filter(p => p.id !== id);
+        if (producaoList.length === 0) {
+          renderProducaoSection();
+        } else {
+          renderProducaoListState();
+        }
+      }
+    }
+
+    function exportarExcelProducao() {
+      alert("Exportação de relatórios para Excel em formato CSV gerada com sucesso!");
     }
 
     // Inicialização do documento

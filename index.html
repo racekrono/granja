@@ -570,11 +570,26 @@
     const pico = parseInt(document.getElementById('input-semana-pico').value) || 28;
 
     if (currentEditingId !== null) {
+      // Atualiza o objeto existente dentro do array
       const index = galpoesList.findIndex(g => g.id === currentEditingId);
       if (index !== -1) {
-        galpoesList[index] = { ...galpoesList[index], nome, dataEntrada, aves, idadeChegada, pico };
+        galpoesList[index] = { 
+          ...galpoesList[index], 
+          nome, 
+          dataEntrada, 
+          aves, 
+          idadeChegada, 
+          pico 
+        };
+        // Se a edição veio da tela de detalhes, reabre a tela com os dados novos
+        const edicaoOrigemId = currentEditingId;
+        currentEditingId = null;
+        showGalpaoDetail(edicaoOrigemId);
+        atualizarDashboard();
+        return;
       }
     } else {
+      // Cria um novo registro
       const novoGalpao = {
         id: Date.now(),
         nome,
@@ -586,6 +601,7 @@
       galpoesList.push(novoGalpao);
     }
 
+    currentEditingId = null;
     renderGalpoesList();
   }
 

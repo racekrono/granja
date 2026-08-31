@@ -9,7 +9,6 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    /* Custom scrollbar para simular o navegador */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -31,48 +30,48 @@
 
       <!-- Links de Navegação -->
       <nav class="space-y-0.5 text-xs font-medium">
-        <a href="#" onclick="navigate('dashboard')" id="nav-dashboard" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg bg-emerald-50 text-emerald-700 font-semibold">
+        <button onclick="navigate('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-emerald-50 text-emerald-700 font-semibold transition">
           <i data-lucide="layout-grid" class="w-4 h-4"></i> Dashboard
-        </a>
-        <a href="#" onclick="navigate('galpoes')" id="nav-galpoes" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('galpoes')" id="nav-galpoes" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="home" class="w-4 h-4"></i> Galpões
-        </a>
-        <a href="#" onclick="navigate('producao')" id="nav-producao" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('producao')" id="nav-producao" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="egg" class="w-4 h-4"></i> Produção
-        </a>
-        <a href="#" onclick="navigate('racao')" id="nav-racao" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('racao')" id="nav-racao" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="wheat" class="w-4 h-4"></i> Ração
-        </a>
-        <a href="#" onclick="navigate('despesas')" id="nav-despesas" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('despesas')" id="nav-despesas" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="dollar-sign" class="w-4 h-4"></i> Despesas
-        </a>
-        <a href="#" onclick="navigate('vendas')" id="nav-vendas" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('vendas')" id="nav-vendas" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="shopping-cart" class="w-4 h-4"></i> Vendas
-        </a>
-        <a href="#" onclick="navigate('precificacao')" id="nav-precificacao" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('precificacao')" id="nav-precificacao" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="calculator" class="w-4 h-4"></i> Precificação Inteligente
-        </a>
-        <a href="#" onclick="navigate('consultor')" id="nav-consultor" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('consultor')" id="nav-consultor" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="bot" class="w-4 h-4"></i> Consultor IA
-        </a>
-        <a href="#" onclick="navigate('central')" id="nav-central" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('central')" id="nav-central" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="cpu" class="w-4 h-4"></i> Central Inteligente
-        </a>
-        <a href="#" onclick="navigate('consumo')" id="nav-consumo" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('consumo')" id="nav-consumo" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="trending-down" class="w-4 h-4"></i> Consumo de Ração
-        </a>
-        <a href="#" onclick="navigate('estoque')" id="nav-estoque" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('estoque')" id="nav-estoque" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="box" class="w-4 h-4"></i> Estoque
-        </a>
-        <a href="#" onclick="navigate('relatorios')" id="nav-relatorios" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('relatorios')" id="nav-relatorios" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="file-text" class="w-4 h-4"></i> Relatórios
-        </a>
-        <a href="#" onclick="navigate('fornecedores')" id="nav-fornecedores" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('fornecedores')" id="nav-fornecedores" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="truck" class="w-4 h-4"></i> Fornecedores
-        </a>
-        <a href="#" onclick="navigate('equipe')" id="nav-equipe" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50">
+        </button>
+        <button onclick="navigate('equipe')" id="nav-equipe" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
           <i data-lucide="users" class="w-4 h-4"></i> Equipe
-        </a>
+        </button>
       </nav>
     </div>
 
@@ -88,7 +87,7 @@
     </div>
   </aside>
 
-  <!-- CONTEÚDO PRINCIPAL -->
+  <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
   <main class="flex-1 overflow-y-auto p-6 space-y-5">
 
     <!-- BANNER TOPO -->
@@ -97,204 +96,248 @@
       <span>Teste grátis termina em 7 dias.</span>
     </div>
 
-    <!-- TÍTULO DASHBOARD -->
-    <div>
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Dashboard</h2>
-      <p class="text-xs text-slate-400">Visão geral da sua granja</p>
-    </div>
-
-    <!-- FILTRO DE DATA -->
-    <div class="inline-flex items-center gap-3 bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-sm text-xs font-semibold text-slate-700">
-      <button class="text-slate-400 hover:text-slate-600">&lt;</button>
-      <div class="flex items-center gap-1.5">
-        <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-500"></i>
-        <span>Agosto De 2026</span>
-      </div>
-      <button class="text-slate-400 hover:text-slate-600">&gt;</button>
-    </div>
-
-    <!-- SEÇÃO: SITUAÇÃO ATUAL -->
-    <div class="space-y-3">
-      <div class="flex items-center gap-2">
-        <span class="text-xs font-bold tracking-wider text-slate-500 uppercase">Situação Atual</span>
-        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-full">Hoje</span>
+    <!-- PÁGINA: DASHBOARD -->
+    <section id="view-dashboard" class="view-page space-y-5">
+      <div>
+        <h2 class="text-2xl font-extrabold text-[#064e3b]">Dashboard</h2>
+        <p class="text-xs text-slate-400">Visão geral da sua granja</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- Card 1 -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total de Aves</p>
-            <h3 id="dash-plantel" class="text-2xl font-extrabold text-slate-900 mt-1">499</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-            <i data-lucide="bird" class="w-5 h-5"></i>
-          </div>
+      <!-- Filtro de Data -->
+      <div class="inline-flex items-center gap-3 bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-sm text-xs font-semibold text-slate-700">
+        <button class="text-slate-400 hover:text-slate-600">&lt;</button>
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span>Agosto De 2026</span>
         </div>
-
-        <!-- Card 2 -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Galpões Ativos</p>
-            <h3 class="text-2xl font-extrabold text-slate-900 mt-1">1</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-            <i data-lucide="home" class="w-5 h-5"></i>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">% de Postura</p>
-            <h3 class="text-2xl font-extrabold text-slate-900 mt-1">80,2%</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-            <i data-lucide="percent" class="w-5 h-5"></i>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Produção Diária</p>
-            <h3 class="text-2xl font-extrabold text-slate-900 mt-1">0 <span class="text-sm font-normal text-slate-600">ovos</span></h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-            <i data-lucide="egg" class="w-5 h-5"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SEÇÃO: RESULTADOS DO MÊS -->
-    <div class="space-y-3 pt-2">
-      <div class="flex items-center gap-2">
-        <span class="text-xs font-bold tracking-wider text-slate-500 uppercase">Resultados do Mês</span>
-        <span class="bg-slate-200 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">Agosto De 2026</span>
+        <button class="text-slate-400 hover:text-slate-600">&gt;</button>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- 1. Produção Mensal -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Produção Mensal</p>
-            <h3 class="text-xl font-extrabold text-slate-900 mt-1">400 <span class="text-sm font-normal text-slate-600">ovos</span></h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-            <i data-lucide="calendar" class="w-5 h-5"></i>
-          </div>
+      <!-- Situação Atual -->
+      <div class="space-y-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold tracking-wider text-slate-500 uppercase">Situação Atual</span>
+          <span class="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-full">Hoje</span>
         </div>
-
-        <!-- 2. Receita do Mês -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-600 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Receita do Mês</p>
-            <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 26,00</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-            <i data-lucide="dollar-sign" class="w-5 h-5"></i>
-          </div>
-        </div>
-
-        <!-- 3. Despesa do Mês -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-500 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Despesa do Mês</p>
-            <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 2.050,00</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-red-50 text-red-500 flex items-center justify-center">
-            <i data-lucide="receipt" class="w-5 h-5"></i>
-          </div>
-        </div>
-
-        <!-- 4. Lucro Líquido -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-500 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lucro Líquido</p>
-            <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ -2.024,00</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-red-50 text-red-400 flex items-center justify-center">
-            <i data-lucide="trending-up" class="w-5 h-5"></i>
-          </div>
-        </div>
-
-        <!-- 5. Custo por Dúzia -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-amber-500 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Custo por Dúzia</p>
-            <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 61,50</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center">
-            <i data-lucide="calculator" class="w-5 h-5"></i>
-          </div>
-        </div>
-
-        <!-- 6. Lucro por Dúzia -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-400 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lucro por Dúzia</p>
-            <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ -60,72</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-red-50 text-red-400 flex items-center justify-center">
-            <i data-lucide="trending-up" class="w-5 h-5"></i>
-          </div>
-        </div>
-
-        <!-- 7. Custo por Bandeja -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-amber-500 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Custo por Bandeja (30 Ovos)</p>
-            <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 153,75</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center">
-            <i data-lucide="box" class="w-5 h-5"></i>
-          </div>
-        </div>
-
-        <!-- 8. Lucro por Bandeja -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-400 p-4 flex items-center justify-between shadow-sm">
-          <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lucro por Bandeja (30 Ovos)</p>
-            <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ -151,80</h3>
-          </div>
-          <div class="w-10 h-10 rounded-lg bg-red-50 text-red-400 flex items-center justify-center">
-            <i data-lucide="box" class="w-5 h-5"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SEÇÃO INFERIOR: CONSULTOR IA E ALERTAS -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-      <!-- Consultor IA -->
-      <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-5 flex items-start justify-between">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-md bg-emerald-200 text-emerald-800 flex items-center justify-center">
-              <i data-lucide="bot" class="w-4 h-4"></i>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total de Aves</p>
+              <h3 class="text-2xl font-extrabold text-slate-900 mt-1">499</h3>
             </div>
-            <h4 class="font-bold text-slate-800 text-sm">Consultor IA</h4>
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <i data-lucide="bird" class="w-5 h-5"></i>
+            </div>
           </div>
-          <p class="text-xs text-slate-400">Insights baseados nos seus dados</p>
-          <p class="text-xs text-slate-500 pt-2">Clique em "Analisar" para receber insights personalizados sobre sua granja baseados nos seus dados reais de...</p>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Galpões Ativos</p>
+              <h3 class="text-2xl font-extrabold text-slate-900 mt-1">1</h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <i data-lucide="home" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">% de Postura</p>
+              <h3 class="text-2xl font-extrabold text-slate-900 mt-1">80,2%</h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <i data-lucide="percent" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Produção Diária</p>
+              <h3 class="text-2xl font-extrabold text-slate-900 mt-1">0 <span class="text-sm font-normal text-slate-600">ovos</span></h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <i data-lucide="egg" class="w-5 h-5"></i>
+            </div>
+          </div>
         </div>
-        <button class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm shrink-0">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i> Analisar
+      </div>
+
+      <!-- Resultados do Mês -->
+      <div class="space-y-3 pt-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold tracking-wider text-slate-500 uppercase">Resultados do Mês</span>
+          <span class="bg-slate-200 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">Agosto De 2026</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Produção Mensal</p>
+              <h3 class="text-xl font-extrabold text-slate-900 mt-1">400 <span class="text-sm font-normal text-slate-600">ovos</span></h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center"><i data-lucide="calendar" class="w-5 h-5"></i></div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-600 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Receita do Mês</p>
+              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 26,00</h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center"><i data-lucide="dollar-sign" class="w-5 h-5"></i></div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-500 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Despesa do Mês</p>
+              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 2.050,00</h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-red-50 text-red-500 flex items-center justify-center"><i data-lucide="receipt" class="w-5 h-5"></i></div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-500 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lucro Líquido</p>
+              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ -2.024,00</h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-red-50 text-red-400 flex items-center justify-center"><i data-lucide="trending-up" class="w-5 h-5"></i></div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-amber-500 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Custo por Dúzia</p>
+              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 61,50</h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center"><i data-lucide="calculator" class="w-5 h-5"></i></div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-400 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lucro por Dúzia</p>
+              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ -60,72</h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-red-50 text-red-400 flex items-center justify-center"><i data-lucide="trending-up" class="w-5 h-5"></i></div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-amber-500 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Custo por Bandeja (30 Ovos)</p>
+              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 153,75</h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center"><i data-lucide="box" class="w-5 h-5"></i></div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-400 p-4 flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lucro por Bandeja (30 Ovos)</p>
+              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ -151,80</h3>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-red-50 text-red-400 flex items-center justify-center"><i data-lucide="box" class="w-5 h-5"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consultor IA e Alertas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+        <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-5 flex items-start justify-between">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-md bg-emerald-200 text-emerald-800 flex items-center justify-center"><i data-lucide="bot" class="w-4 h-4"></i></div>
+              <h4 class="font-bold text-slate-800 text-sm">Consultor IA</h4>
+            </div>
+            <p class="text-xs text-slate-400">Insights baseados nos seus dados</p>
+            <p class="text-xs text-slate-500 pt-2">Clique em "Analisar" para receber insights personalizados sobre sua granja baseados nos seus dados reais de...</p>
+          </div>
+          <button onclick="navigate('consultor')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm shrink-0">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i> Analisar
+          </button>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
+          <div class="flex items-center gap-2">
+            <i data-lucide="bell" class="w-4 h-4 text-slate-500"></i>
+            <h4 class="font-bold text-slate-800 text-sm">Alertas</h4>
+          </div>
+          <div class="py-6 text-center text-xs text-slate-400">Nenhum alerta pendente</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PÁGINA: GALPÕES -->
+    <section id="view-galpoes" class="view-page hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-extrabold text-[#064e3b]">Galpões</h2>
+          <p class="text-xs text-slate-400">Gerencie a estrutura e o lote de aves de cada galpão</p>
+        </div>
+        <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i> Novo Galpão
         </button>
       </div>
-
-      <!-- Alertas -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
-        <div class="flex items-center gap-2">
-          <i data-lucide="bell" class="w-4 h-4 text-slate-500"></i>
-          <h4 class="font-bold text-slate-800 text-sm">Alertas</h4>
-        </div>
-        <div class="py-6 text-center text-xs text-slate-400">
-          Nenhum alerta pendente
-        </div>
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+        <h3 class="font-bold text-slate-800 text-sm mb-2">Galpão Principal</h3>
+        <p class="text-xs text-slate-500">Lote Ativo: 499 Galinhas Poedeiras</p>
       </div>
-    </div>
+    </section>
+
+    <!-- PÁGINA: PRODUÇÃO -->
+    <section id="view-producao" class="view-page hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-extrabold text-[#064e3b]">Produção</h2>
+          <p class="text-xs text-slate-400">Registro diário de postura de ovos</p>
+        </div>
+        <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i> Registrar Coleta
+        </button>
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+        <p class="text-xs text-slate-500">Tabela de registros de postura em breve...</p>
+      </div>
+    </section>
+
+    <!-- DEMIAS PÁGINAS (TEMPLATE PADRÃO PARA CADA MÓDULO) -->
+    <section id="view-racao" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Ração</h2>
+      <p class="text-xs text-slate-400">Formulações e controle de insumos</p>
+    </section>
+
+    <section id="view-despesas" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Despesas</h2>
+      <p class="text-xs text-slate-400">Lançamento de custos operacionais e insumos</p>
+    </section>
+
+    <section id="view-vendas" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Vendas</h2>
+      <p class="text-xs text-slate-400">Controle de saída de ovos e faturamento</p>
+    </section>
+
+    <section id="view-precificacao" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Precificação Inteligente</h2>
+      <p class="text-xs text-slate-400">Calculadora de margem e preço de venda por dúzia/bandeja</p>
+    </section>
+
+    <section id="view-consultor" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Consultor IA</h2>
+      <p class="text-xs text-slate-400">Análise automatizada de desempenho e produtividade</p>
+    </section>
+
+    <section id="view-central" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Central Inteligente</h2>
+      <p class="text-xs text-slate-400">Painel de métricas avançadas</p>
+    </section>
+
+    <section id="view-consumo" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Consumo de Ração</h2>
+      <p class="text-xs text-slate-400">Métricas de gramas por ave/dia</p>
+    </section>
+
+    <section id="view-estoque" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Estoque</h2>
+      <p class="text-xs text-slate-400">Insumos, embalagens e produtos acabados</p>
+    </section>
+
+    <section id="view-relatorios" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Relatórios</h2>
+      <p class="text-xs text-slate-400">Exportação de dados em PDF e Excel</p>
+    </section>
+
+    <section id="view-fornecedores" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Fornecedores</h2>
+      <p class="text-xs text-slate-400">Cadastro de contatos e parceiros</p>
+    </section>
+
+    <section id="view-equipe" class="view-page hidden space-y-4">
+      <h2 class="text-2xl font-extrabold text-[#064e3b]">Equipe</h2>
+      <p class="text-xs text-slate-400">Gestão de acessos e colaboradores</p>
+    </section>
 
   </main>
 
@@ -303,16 +346,31 @@
     <i data-lucide="message-circle" class="w-6 h-6"></i>
   </a>
 
+  <!-- SCRIPT DE NAVEGAÇÃO -->
   <script>
     lucide.createIcons();
 
     function navigate(viewName) {
+      // 1. Esconder todas as seções
+      document.querySelectorAll('.view-page').forEach(page => {
+        page.classList.add('hidden');
+      });
+
+      // 2. Mostrar a seção selecionada
+      const targetPage = document.getElementById(`view-${viewName}`);
+      if (targetPage) {
+        targetPage.classList.remove('hidden');
+      }
+
+      // 3. Atualizar estados da Sidebar
       document.querySelectorAll('.nav-item').forEach(btn => {
         btn.classList.remove('bg-emerald-50', 'text-emerald-700', 'font-semibold');
         btn.classList.add('text-slate-600');
       });
+
       const activeBtn = document.getElementById(`nav-${viewName}`);
-      if(activeBtn) {
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-600');
         activeBtn.classList.add('bg-emerald-50', 'text-emerald-700', 'font-semibold');
       }
     }

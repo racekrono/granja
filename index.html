@@ -1,1345 +1,155 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PosturaSmart — Gestão de granjas avícolas</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PosturaSmart — Gestão de granjas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-[#f4f7f6] text-slate-700 font-sans antialiased flex h-screen overflow-hidden">
+<body class="bg-[#f8faf8] text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
 
-  <!-- SIDEBAR LATERAL -->
-  <aside class="w-60 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 h-full overflow-y-auto">
-    <div class="p-4">
-      <!-- Logo -->
-      <div class="flex items-center gap-2 mb-6 px-2">
-        <div class="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-sm">P</div>
-        <div>
-          <h1 class="font-bold text-sm text-emerald-900 leading-tight">PosturaSmart</h1>
-          <p class="text-[10px] text-slate-400">Gestão inteligente</p>
+    <!-- Top Banner (Aviso de Teste Grátis) -->
+    <div class="px-6 pt-4">
+        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center justify-between shadow-sm">
+            <div class="flex items-center space-x-3 text-blue-700 text-sm font-medium">
+                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+                    <polyline points="12 6 12 12 16 14" stroke-width="2"></polyline>
+                </svg>
+                <span>Teste grátis termina em 3 dias.</span>
+            </div>
+            <button class="bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                Assinar Agora
+            </button>
         </div>
-      </div>
-
-      <!-- Links de Navegação -->
-      <nav class="space-y-0.5 text-xs font-medium">
-        <button onclick="navigate('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-emerald-50 text-emerald-700 font-semibold transition">
-          <i data-lucide="layout-grid" class="w-4 h-4"></i> Dashboard
-        </button>
-        <button onclick="navigate('galpoes')" id="nav-galpoes" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="home" class="w-4 h-4"></i> Galpões
-        </button>
-        <button onclick="navigate('producao')" id="nav-producao" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="egg" class="w-4 h-4"></i> Produção
-        </button>
-        <button onclick="navigate('racao')" id="nav-racao" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="wheat" class="w-4 h-4"></i> Ração
-        </button>
-        <button onclick="navigate('despesas')" id="nav-despesas" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="dollar-sign" class="w-4 h-4"></i> Despesas
-        </button>
-        <button onclick="navigate('vendas')" id="nav-vendas" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="shopping-cart" class="w-4 h-4"></i> Vendas
-        </button>
-        <button onclick="navigate('precificacao')" id="nav-precificacao" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="calculator" class="w-4 h-4"></i> Precificação Inteligente
-        </button>
-        <button onclick="navigate('consultor')" id="nav-consultor" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="bot" class="w-4 h-4"></i> Consultor IA
-        </button>
-        <button onclick="navigate('central')" id="nav-central" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="cpu" class="w-4 h-4"></i> Central Inteligente
-        </button>
-        <button onclick="navigate('consumo')" id="nav-consumo" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="trending-down" class="w-4 h-4"></i> Consumo de Ração
-        </button>
-        <button onclick="navigate('estoque')" id="nav-estoque" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="box" class="w-4 h-4"></i> Estoque
-        </button>
-        <button onclick="navigate('relatorios')" id="nav-relatorios" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="file-text" class="w-4 h-4"></i> Relatórios
-        </button>
-        <button onclick="navigate('fornecedores')" id="nav-fornecedores" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="truck" class="w-4 h-4"></i> Fornecedores
-        </button>
-        <button onclick="navigate('equipe')" id="nav-equipe" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition">
-          <i data-lucide="users" class="w-4 h-4"></i> Equipe
-        </button>
-      </nav>
     </div>
 
-    <!-- Usuário Rodapé -->
-    <div class="p-3 border-t border-slate-100 bg-white">
-      <div class="px-2 py-1">
-        <p class="text-xs font-bold text-slate-800 truncate">italo-mota@hotmail.com</p>
-        <p class="text-[10px] text-slate-400">Avicultor</p>
-      </div>
-      <button class="w-full mt-2 flex items-center gap-2 px-2 py-1.5 text-xs text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
-        <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Sair
-      </button>
-    </div>
-  </aside>
-
-  <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
-  <main class="flex-1 overflow-y-auto p-6 space-y-5">
-
-    <!-- PÁGINA: DASHBOARD -->
-    <section id="view-dashboard" class="view-page space-y-5">
-      <div>
-        <h2 class="text-2xl font-extrabold text-[#064e3b]">Dashboard</h2>
-        <p class="text-xs text-slate-400">Visão geral da sua granja</p>
-      </div>
-
-      <!-- Filtro de Data -->
-      <div class="inline-flex items-center gap-3 bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-sm text-xs font-semibold text-slate-700">
-        <button onclick="mudarMesDashboard(-1)" class="text-slate-400 hover:text-slate-600">&lt;</button>
-        <div class="flex items-center gap-1.5">
-          <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-500"></i>
-          <span id="label-mes-dashboard">--</span>
-        </div>
-        <button onclick="mudarMesDashboard(1)" class="text-slate-400 hover:text-slate-600">&gt;</button>
-      </div>
-
-      <!-- Situação Atual -->
-      <div class="space-y-3">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-bold tracking-wider text-slate-500 uppercase">Situação Atual</span>
-          <span class="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-full">Hoje</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
+    <!-- Main Content Area -->
+    <main class="p-6 max-w-5xl">
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-6">
             <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total de Aves</p>
-              <h3 id="dash-plantel" class="text-2xl font-extrabold text-slate-900 mt-1">0</h3>
+                <h1 class="text-2xl font-bold text-slate-800">Registrar Ração</h1>
+                <p class="text-sm text-slate-500 mt-0.5">Adicione um novo registro de consumo de ração</p>
             </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-              <i data-lucide="bird" class="w-5 h-5"></i>
-            </div>
-          </div>
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Galpões Ativos</p>
-              <h3 id="dash-galpoes-ativos" class="text-2xl font-extrabold text-slate-900 mt-1">0</h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-              <i data-lucide="home" class="w-5 h-5"></i>
-            </div>
-          </div>
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">% de Postura</p>
-              <h3 id="dash-postura-hoje" class="text-2xl font-extrabold text-slate-900 mt-1">0,0%</h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-              <i data-lucide="percent" class="w-5 h-5"></i>
-            </div>
-          </div>
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Produção Diária</p>
-              <h3 id="dash-prod-hoje" class="text-2xl font-extrabold text-slate-900 mt-1">0 <span class="text-sm font-normal text-slate-600">ovos</span></h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-              <i data-lucide="egg" class="w-5 h-5"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Resultados do Mês -->
-      <div class="space-y-3 pt-2">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-bold tracking-wider text-slate-500 uppercase">Resultados do Mês</span>
-          <span id="badge-mes-ref" class="bg-slate-200 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">--</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Produção Mensal</p>
-              <h3 id="dash-prod-mensal" class="text-xl font-extrabold text-slate-900 mt-1">0 <span class="text-sm font-normal text-slate-600">ovos</span></h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-          </div>
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-600 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Receita do Mês</p>
-              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 0,00</h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center"><i data-lucide="dollar-sign" class="w-5 h-5"></i></div>
-          </div>
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-500 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Despesa do Mês</p>
-              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 0,00</h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-red-50 text-red-500 flex items-center justify-center"><i data-lucide="receipt" class="w-5 h-5"></i></div>
-          </div>
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-red-500 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lucro Líquido</p>
-              <h3 class="text-xl font-extrabold text-slate-900 mt-1">R$ 0,00</h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-red-50 text-red-400 flex items-center justify-center"><i data-lucide="trending-up" class="w-5 h-5"></i></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Consultor IA e Alertas -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-        <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-5 flex items-start justify-between">
-          <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-md bg-emerald-200 text-emerald-800 flex items-center justify-center"><i data-lucide="bot" class="w-4 h-4"></i></div>
-              <h4 class="font-bold text-slate-800 text-sm">Consultor IA</h4>
-            </div>
-            <p class="text-xs text-slate-400">Insights baseados nos seus dados</p>
-            <p class="text-xs text-slate-500 pt-2">Clique em "Analisar" para receber insights personalizados sobre sua granja baseados nos seus dados reais de...</p>
-          </div>
-          <button onclick="navigate('consultor')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm shrink-0">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i> Analisar
-          </button>
-        </div>
-        <div class="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
-          <div class="flex items-center gap-2">
-            <i data-lucide="bell" class="w-4 h-4 text-slate-500"></i>
-            <h4 class="font-bold text-slate-800 text-sm">Alertas</h4>
-          </div>
-          <div class="py-6 text-center text-xs text-slate-400">Nenhum alerta pendente</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PÁGINA: GALPÕES -->
-    <section id="view-galpoes" class="view-page hidden space-y-5">
-      
-      <!-- ESTADO 1: LISTA VAZIA DE GALPÕES -->
-      <div id="galpoes-empty-state" class="space-y-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-2xl font-extrabold text-[#064e3b]">Galpões</h2>
-            <p class="text-xs text-slate-400">Gerencie seus galpões e lotes de aves</p>
-          </div>
-          <button onclick="showGalpaoForm()" class="bg-[#064e3b] hover:bg-emerald-800 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
-            <i data-lucide="plus" class="w-4 h-4"></i> Novo Galpão
-          </button>
+            <a href="/racao" class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Voltar
+            </a>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-2xl py-20 px-4 text-center flex flex-col items-center justify-center space-y-3 shadow-sm min-h-[400px]">
-          <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-            <i data-lucide="warehouse" class="w-8 h-8"></i>
-          </div>
-          <h3 class="font-bold text-slate-800 text-base">Nenhum galpão cadastrado</h3>
-          <p class="text-xs text-slate-400 max-w-sm">Cadastre seu primeiro galpão para começar a registrar a produção de ovos.</p>
-          <button onclick="showGalpaoForm()" class="mt-2 bg-[#064e3b] hover:bg-emerald-800 text-white text-xs font-semibold px-5 py-2.5 rounded-lg shadow-sm">
-            Cadastrar Galpão
-          </button>
+        <!-- Form Card Container -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm max-w-xl">
+            <form class="space-y-5" onsubmit="event.preventDefault();">
+                
+                <!-- Field: Lote -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Lote</label>
+                    <div class="relative">
+                        <select class="w-full bg-[#f8faf8] border border-slate-200 rounded-xl px-4 py-3 text-slate-700 appearance-none focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                            <option value="" disabled selected>Selecione um lote</option>
+                            <option value="galpao-1">Galpão 1</option>
+                            <option value="galpao-2">Galpão 2</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Field: Tipo de Ração (NOVO SELETOR ADICIONADO) -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo de Ração</label>
+                    <div class="relative">
+                        <select class="w-full bg-[#f8faf8] border border-slate-200 rounded-xl px-4 py-3 text-slate-700 appearance-none focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                            <option value="" disabled selected>Selecione o tipo de ração</option>
+                            <option value="inicial">Ração Inicial</option>
+                            <option value="crescimento">Ração Crescimento</option>
+                            <option value="pre-postura">Ração Pré-Postura</option>
+                            <option value="postura-1">Ração Postura 1</option>
+                            <option value="postura-2">Ração Postura 2</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Field: Data -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Data</label>
+                    <div class="relative">
+                        <input type="text" value="4 de setembro de 2026" class="w-full bg-[#f8faf8] border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid: Quantidade (kg) & Custo por kg (R$) -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Quantidade (kg)</label>
+                        <input type="text" placeholder="Ex: 20" class="w-full bg-[#f8faf8] border border-slate-200 rounded-xl px-4 py-3 text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Custo por kg (R$)</label>
+                        <input type="text" placeholder="Ex: 2.50" class="w-full bg-[#f8faf8] border border-slate-200 rounded-xl px-4 py-3 text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                    </div>
+                </div>
+
+                <!-- Field: Consumo por ave (g/dia) -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Consumo por ave (g/dia)</label>
+                    <input type="text" placeholder="Ex: 120" class="w-full bg-[#f8faf8] border border-slate-200 rounded-xl px-4 py-3 text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                    <p class="text-xs text-slate-400 mt-1.5">Informe a quantidade média de ração consumida por ave por dia</p>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-[#82bda2] hover:bg-brand-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 shadow-sm">
+                        Registrar Ração
+                    </button>
+                </div>
+
+            </form>
         </div>
-      </div>
+    </main>
 
-      <!-- ESTADO 2: FORMULÁRIO -->
-      <div id="galpoes-form-state" class="hidden space-y-5">
-        <div>
-          <h2 id="galpao-form-title" class="text-2xl font-extrabold text-[#064e3b]">Novo Galpão</h2>
-          <p class="text-xs text-slate-400">Cadastre ou edite um galpão / lote de aves</p>
+    <!-- Footer Space -->
+    <footer class="p-6 text-center text-xs text-slate-400 space-y-2">
+        <p>PosturaSmart – Gestão inteligente para lucrar mais com ovos</p>
+        <div class="flex justify-center gap-4 text-slate-500">
+            <a href="#" class="hover:underline">Blog</a>
+            <a href="#" class="hover:underline">Termos de Uso</a>
+            <a href="#" class="hover:underline">Política de Privacidade</a>
+            <a href="#" class="hover:underline">Aviso Legal</a>
+            <a href="#" class="hover:underline">YouTube</a>
         </div>
+        <p>Suporte: suporte@posturasmart.app</p>
+    </footer>
 
-        <form onsubmit="handleGalpaoSubmit(event)" class="bg-white border border-slate-200 rounded-2xl p-6 max-w-xl space-y-4 shadow-sm">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Nome do Galpão</label>
-            <input type="text" id="input-nome-galpao" placeholder="Ex: Galpão 1, Lote Janeiro 2024" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Data de Entrada do Lote</label>
-            <input type="date" id="input-data-entrada" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-            <p class="text-[10px] text-slate-400 mt-1">Data em que as aves chegaram ao galpão</p>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Quantidade Inicial de Aves</label>
-            <input type="number" id="input-qtd-aves" placeholder="0" min="1" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Idade na Chegada (semanas)</label>
-            <input type="number" id="input-idade-chegada" placeholder="0" value="0" min="0" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-            <p class="text-[10px] text-slate-400 mt-1">Idade das aves em semanas quando chegaram ao galpão (0 se pintinhas de 1 dia)</p>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Semana de Pico de Postura</label>
-            <input type="number" id="input-semana-pico" placeholder="28" value="28" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-            <p class="text-[10px] text-slate-400 mt-1">Semana estimada para o pico de produção (geralmente entre 25-30 semanas)</p>
-          </div>
-
-          <div class="flex items-center gap-3 pt-4">
-            <button type="button" onclick="cancelarFormulario()" class="w-1/2 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition">
-              Cancelar
-            </button>
-            <button type="submit" class="w-1/2 py-2.5 text-xs font-semibold text-white bg-[#064e3b] hover:bg-emerald-800 rounded-lg shadow-sm transition">
-              Salvar Galpão
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- ESTADO 3: LISTA COM GRID DE CARDS -->
-      <div id="galpoes-list-state" class="hidden space-y-5">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-2xl font-extrabold text-[#064e3b]">Galpões</h2>
-            <p class="text-xs text-slate-400">Gerencie seus galpões e lotes de aves</p>
-          </div>
-          <button onclick="showGalpaoForm()" class="bg-[#064e3b] hover:bg-emerald-800 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
-            <i data-lucide="plus" class="w-4 h-4"></i> Novo Galpão
-          </button>
-        </div>
-
-        <div id="galpoes-grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-      </div>
-
-      <!-- ESTADO 4: DETALHES DO GALPÃO -->
-      <div id="galpoes-detail-state" class="hidden space-y-5">
-        <button onclick="renderGalpoesList()" class="text-xs font-semibold text-slate-600 hover:text-emerald-700 flex items-center gap-1">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar
-        </button>
-
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-              <i data-lucide="warehouse" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h2 id="detail-galpao-nome" class="text-xl font-extrabold text-slate-900">--</h2>
-              <p id="detail-galpao-sub" class="text-xs text-slate-400">0 semanas de vida • Entrada: --</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="editCurrentGalpao()" class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm hover:bg-slate-50">
-              <i data-lucide="edit" class="w-3.5 h-3.5"></i> Editar
-            </button>
-            <button onclick="deleteCurrentGalpao()" class="bg-white border border-red-200 text-red-600 hover:bg-red-50 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Excluir
-            </button>
-          </div>
-        </div>
-
-        <!-- 4 Métricas do Topo -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Aves Atuais</p>
-              <h3 id="detail-aves" class="text-2xl font-extrabold text-slate-900 mt-1">0</h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center"><i data-lucide="bird" class="w-5 h-5"></i></div>
-          </div>
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Taxa de Mortalidade</p>
-              <h3 class="text-2xl font-extrabold text-slate-900 mt-1">0.0%</h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center"><i data-lucide="skull" class="w-5 h-5"></i></div>
-          </div>
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Taxa de Postura</p>
-              <h3 id="detail-taxa-postura" class="text-2xl font-extrabold text-slate-900 mt-1">0,0%</h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center"><i data-lucide="egg" class="w-5 h-5"></i></div>
-          </div>
-          <div class="bg-white rounded-xl border border-slate-200 border-t-4 border-t-emerald-700 p-4 flex items-center justify-between shadow-sm">
-            <div>
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Semana de Pico</p>
-              <h3 id="detail-pico" class="text-2xl font-extrabold text-slate-900 mt-1">28 sem</h3>
-            </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center"><i data-lucide="trending-up" class="w-5 h-5"></i></div>
-          </div>
-        </div>
-
-        <!-- Bloco Nutrição -->
-        <div class="bg-amber-50/50 border border-amber-200 rounded-2xl p-5 space-y-4">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <i data-lucide="wheat" class="w-5 h-5 text-amber-600"></i>
-              <div>
-                <h4 class="font-bold text-slate-800 text-sm">Nutrição</h4>
-                <p id="nutricao-galpao-nome" class="text-[11px] text-slate-400">--</p>
-              </div>
-            </div>
-            <span class="text-[10px] font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md flex items-center gap-1">
-              <i data-lucide="alert-triangle" class="w-3 h-3"></i> Atenção
-            </span>
-          </div>
-
-          <div class="grid grid-cols-3 gap-2 text-xs">
-            <div>
-              <p class="text-slate-400">Fase atual:</p>
-              <p class="font-semibold text-slate-700">Fase Inicial</p>
-            </div>
-            <div>
-              <p class="text-slate-400">Idade do lote:</p>
-              <p id="detail-idade-chegada" class="font-semibold text-slate-700">0 semanas</p>
-            </div>
-            <div>
-              <p class="text-slate-400">Ração recomendada:</p>
-              <p class="font-semibold text-slate-700">Ração Inicial</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 bg-white/60 p-3 rounded-xl border border-amber-100 text-center">
-            <div>
-              <p class="text-[10px] text-slate-400">Proteína</p>
-              <p class="font-extrabold text-slate-800 text-sm">18-20%</p>
-            </div>
-            <div>
-              <p class="text-[10px] text-slate-400">Cálcio</p>
-              <p class="font-extrabold text-slate-800 text-sm">0.9-1.1%</p>
-            </div>
-          </div>
-
-          <div class="text-[11px] text-slate-500 space-y-1">
-            <p class="flex items-center gap-1 text-slate-400"><i data-lucide="info" class="w-3 h-3"></i> Crescimento rápido e formação óssea</p>
-            <p class="font-medium">Recomendações:</p>
-            <p class="text-slate-500">• Registre o tipo de ração utilizado. Para a fase inicial, recomendamos Ração Inicial.</p>
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- PÁGINA: PRODUÇÃO -->
-    <section id="view-producao" class="view-page hidden space-y-5">
-
-      <!-- ESTADO 1: LISTA VAZIA DE PRODUÇÃO -->
-      <div id="producao-empty-state" class="space-y-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-2xl font-extrabold text-[#064e3b]">Produção de Ovos</h2>
-            <p class="text-xs text-slate-400">Registro e histórico de produção</p>
-          </div>
-          <button onclick="showProducaoForm()" class="bg-[#064e3b] hover:bg-emerald-800 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
-            <i data-lucide="plus" class="w-4 h-4"></i> Registrar Produção
-          </button>
-        </div>
-
-        <div class="bg-white border border-slate-200 rounded-2xl py-20 px-4 text-center flex flex-col items-center justify-center space-y-3 shadow-sm min-h-[400px]">
-          <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-            <span class="text-3xl font-light text-slate-400">0</span>
-          </div>
-          <h3 class="font-bold text-slate-800 text-base">Nenhuma produção registrada</h3>
-          <p class="text-xs text-slate-400 max-w-sm">Comece a registrar a produção diária de ovos para acompanhar o desempenho dos seus galpões.</p>
-          <button onclick="showProducaoForm()" class="mt-2 bg-[#064e3b] hover:bg-emerald-800 text-white text-xs font-semibold px-5 py-2.5 rounded-lg shadow-sm">
-            Registrar Primeira Produção
-          </button>
-        </div>
-      </div>
-
-      <!-- ESTADO 2: FORMULÁRIO -->
-      <div id="producao-form-state" class="hidden space-y-5">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 id="producao-form-title" class="text-2xl font-extrabold text-[#064e3b]">Registrar Produção</h2>
-            <p id="producao-form-sub" class="text-xs text-slate-400">Registre a produção diária ou por período (retroativo)</p>
-          </div>
-          <button id="btn-voltar-producao" onclick="cancelarFormProducao()" class="hidden text-xs font-semibold text-slate-600 hover:text-emerald-700 flex items-center gap-1">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar
-          </button>
-        </div>
-
-        <div id="producao-tabs-tipo" class="inline-flex bg-slate-100 p-1 rounded-xl gap-1 text-xs font-medium max-w-md w-full">
-          <button type="button" id="tab-diario" onclick="switchProducaoTab('diario')" class="w-1/2 py-1.5 rounded-lg bg-white text-slate-800 font-semibold shadow-sm transition text-center">
-            Lançamento Diário
-          </button>
-          <button type="button" id="tab-periodo" onclick="switchProducaoTab('periodo')" class="w-1/2 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition text-center">
-            Lançamento por Período
-          </button>
-        </div>
-
-        <form onsubmit="handleProducaoSubmit(event)" class="bg-white border border-slate-200 rounded-2xl p-6 max-w-xl space-y-4 shadow-sm">
-          
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Galpão</label>
-            <select id="input-prod-galpao" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50 text-slate-700 font-medium">
-              <option value="">Selecione o galpão</option>
-            </select>
-          </div>
-
-          <div id="campo-data-unica">
-            <label class="block text-xs font-bold text-slate-700 mb-1">Data da Produção</label>
-            <input type="date" id="input-prod-data" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-          </div>
-
-          <div id="campos-intervalo-datas" class="hidden grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Data Inicial</label>
-              <input type="date" id="input-prod-dataini" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Data Final</label>
-              <input type="date" id="input-prod-datafim" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="wrapper-quantidades">
-            <div>
-              <label id="lbl-qtd-ovos" class="block text-xs font-bold text-slate-700 mb-1">Quantidade de Ovos Produzidos</label>
-              <input type="number" id="input-prod-ovos" placeholder="0" min="0" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-            </div>
-            <div>
-              <label id="lbl-qtd-quebrados" class="block text-xs font-bold text-slate-700 mb-1">Ovos Quebrados (opcional)</label>
-              <input type="number" id="input-prod-quebrados" placeholder="0" min="0" value="0" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50">
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Observações (opcional)</label>
-            <textarea id="input-prod-obs" rows="3" placeholder="Ex: Problema com bebedouros, calor intenso..." class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50 resize-none"></textarea>
-          </div>
-
-          <div class="flex items-center gap-3 pt-4">
-            <button type="button" onclick="cancelarFormProducao()" class="w-1/2 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition">
-              Cancelar
-            </button>
-            <button type="submit" id="btn-submit-producao" class="w-1/2 py-2.5 text-xs font-semibold text-white bg-[#064e3b] hover:bg-emerald-800 rounded-lg shadow-sm transition">
-              Registrar Produção
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- ESTADO 3: LISTAGEM DE HISTÓRICO COM MÉTRICAS -->
-      <div id="producao-list-state" class="hidden space-y-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 class="text-2xl font-extrabold text-[#064e3b]">Produção de Ovos</h2>
-            <p class="text-xs text-slate-400">Registro e histórico de produção</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="exportarExcelProducao()" class="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm">
-              <i data-lucide="download" class="w-4 h-4"></i> Exportar para Excel
-            </button>
-            <button onclick="showProducaoForm()" class="bg-[#064e3b] hover:bg-emerald-800 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
-              <i data-lucide="plus" class="w-4 h-4"></i> Registrar Produção
-            </button>
-          </div>
-        </div>
-
-        <!-- Cards Superior de Métricas de Produção -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
-          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Produção (Hoje)</span>
-              <div class="w-6 h-6 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">0</div>
-            </div>
-            <h3 id="card-prod-hoje" class="text-xl font-extrabold text-slate-900">0 <span class="text-xs font-normal text-slate-500">ovos</span></h3>
-          </div>
-
-          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">7 Dias até Hoje</span>
-              <i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i>
-            </div>
-            <h3 id="card-prod-7dias" class="text-xl font-extrabold text-slate-900">0 <span class="text-xs font-normal text-slate-500">ovos</span></h3>
-          </div>
-
-          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Média Diária</span>
-              <div class="w-6 h-6 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">O</div>
-            </div>
-            <h3 id="card-prod-media" class="text-xl font-extrabold text-slate-900">0 <span class="text-xs font-normal text-slate-500">ovos</span></h3>
-          </div>
-
-          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">% de Postura (Hoje)</span>
-              <span class="text-xs font-bold text-emerald-600">%</span>
-            </div>
-            <h3 id="card-prod-postura-hoje" class="text-xl font-extrabold text-emerald-600">0,0%</h3>
-          </div>
-
-          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">% de Postura do Mês</span>
-              <span class="text-xs font-bold text-emerald-600">%</span>
-            </div>
-            <h3 id="card-prod-postura-mes" class="text-xl font-extrabold text-emerald-600">0,0%</h3>
-          </div>
-
-          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-1">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tendência</span>
-              <i data-lucide="minus" class="w-4 h-4 text-slate-400"></i>
-            </div>
-            <h3 id="card-prod-tendencia" class="text-lg font-extrabold text-slate-700">+0.0%</h3>
-            <p class="text-[9px] text-slate-400 leading-tight">Tendência estável</p>
-          </div>
-        </div>
-
-        <!-- Tabela Histórico de Produção -->
-        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden space-y-3 p-4">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-              Histórico de Produção
-            </h4>
-            <div class="inline-flex items-center gap-2 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700">
-              <button onclick="mudarMesProducao(-1)" class="text-slate-400 hover:text-slate-600">&lt;</button>
-              <span id="label-mes-producao">--</span>
-              <button onclick="mudarMesProducao(1)" class="text-slate-400 hover:text-slate-600">&gt;</button>
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr class="text-[11px] font-bold text-slate-400 border-b border-slate-100 uppercase tracking-wider">
-                  <th class="py-2.5 px-3">Data</th>
-                  <th class="py-2.5 px-3">Galpão</th>
-                  <th class="py-2.5 px-3 text-center">Ovos Produzidos</th>
-                  <th class="py-2.5 px-3 text-center">Ovos Quebrados</th>
-                  <th class="py-2.5 px-3">Observações</th>
-                  <th class="py-2.5 px-3 text-right">Ações</th>
-                </tr>
-              </thead>
-              <tbody id="tabela-producao-body" class="divide-y divide-slate-100 text-slate-700">
-                <!-- Linhas inseridas dinamicamente pelo JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- DEMAIS PÁGINAS -->
-    <section id="view-racao" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Ração</h2>
-      <p class="text-xs text-slate-400">Formulações e controle de insumos</p>
-    </section>
-
-    <section id="view-despesas" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Despesas</h2>
-      <p class="text-xs text-slate-400">Lançamento de custos operacionais e insumos</p>
-    </section>
-
-    <section id="view-vendas" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Vendas</h2>
-      <p class="text-xs text-slate-400">Controle de saída de ovos e faturamento</p>
-    </section>
-
-    <section id="view-precificacao" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Precificação Inteligente</h2>
-      <p class="text-xs text-slate-400">Calculadora de margem e preço de venda por dúzia/bandeja</p>
-    </section>
-
-    <section id="view-consultor" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Consultor IA</h2>
-      <p class="text-xs text-slate-400">Análise automatizada de desempenho e produtividade</p>
-    </section>
-
-    <section id="view-central" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Central Inteligente</h2>
-      <p class="text-xs text-slate-400">Painel de métricas avançadas</p>
-    </section>
-
-    <section id="view-consumo" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Consumo de Ração</h2>
-      <p class="text-xs text-slate-400">Métricas de gramas por ave/dia</p>
-    </section>
-
-    <section id="view-estoque" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Estoque</h2>
-      <p class="text-xs text-slate-400">Insumos, embalagens e produtos acabados</p>
-    </section>
-
-    <section id="view-relatorios" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Relatórios</h2>
-      <p class="text-xs text-slate-400">Exportação de dados em PDF e Excel</p>
-    </section>
-
-    <section id="view-fornecedores" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Fornecedores</h2>
-      <p class="text-xs text-slate-400">Cadastro de contatos e parceiros</p>
-    </section>
-
-    <section id="view-equipe" class="view-page hidden space-y-4">
-      <h2 class="text-2xl font-extrabold text-[#064e3b]">Equipe</h2>
-      <p class="text-xs text-slate-400">Gestão de acessos e colaboradores</p>
-    </section>
-
-  </main>
-
-  <!-- BOTÃO FLUTUANTE DE WHATSAPP -->
-  <a href="#" class="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-600 text-white p-3 rounded-full shadow-lg transition z-50">
-    <i data-lucide="message-circle" class="w-6 h-6"></i>
-  </a>
-
-  <!-- SCRIPT UNIFICADO DO FIREBASE + INTERFACE -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDD-6ZugbKVmSfmF76iBrXqmOD7ZAYyo24",
-      authDomain: "granja-5d0b8.firebaseapp.com",
-      databaseURL: "https://granja-5d0b8-default-rtdb.firebaseio.com",
-      projectId: "granja-5d0b8",
-      storageBucket: "granja-5d0b8.firebasestorage.app",
-      messagingSenderId: "140023118643",
-      appId: "1:140023118643:web:29b41055a6d3a6fd58dc46"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Coleções
-    const galpoesRef = collection(db, "galpoes");
-    const producaoRef = collection(db, "producao");
-
-    // Variáveis Globais de Estado
-    const mesesNomes = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-    window.galpoesList = [];
-    window.producaoList = [];
-    window.currentEditingId = null;
-    window.currentSelectedId = null;
-    window.currentEditingProducaoId = null;
-    window.producaoTipoAbas = 'diario';
-    
-    // Inicialização da Data Dinâmica
-    const hoje = new Date();
-    window.dataReferenciaProducao = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
-
-    // Dynamic Icon Loading Helper
-    function refreshIcons() {
-      if (window.lucide) window.lucide.createIcons();
-    }
-
-    // Navegação
-    window.navigate = function(viewName) {
-      document.querySelectorAll('.view-page').forEach(page => page.classList.add('hidden'));
-      const targetPage = document.getElementById(`view-${viewName}`);
-      if (targetPage) targetPage.classList.remove('hidden');
-
-      document.querySelectorAll('.nav-item').forEach(btn => {
-        btn.classList.remove('bg-emerald-50', 'text-emerald-700', 'font-semibold');
-        btn.classList.add('text-slate-600');
-      });
-
-      const activeBtn = document.getElementById(`nav-${viewName}`);
-      if (activeBtn) {
-        activeBtn.classList.remove('text-slate-600');
-        activeBtn.classList.add('bg-emerald-50', 'text-emerald-700', 'font-semibold');
-      }
-
-      if (viewName === 'producao') {
-        window.renderProducaoSection();
-      } else if (viewName === 'dashboard') {
-        window.atualizarDashboard();
-      }
-    };
-
-    // Sincronização em Tempo Real de Galpões
-    onSnapshot(galpoesRef, (snapshot) => {
-      window.galpoesList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      window.renderGalpoesList();
-      window.atualizarDashboard();
-    });
-
-    // Sincronização em Tempo Real de Produção
-    onSnapshot(producaoRef, (snapshot) => {
-      window.producaoList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      window.renderProducaoSection();
-      window.atualizarDashboard();
-    });
-
-    /* OPERAÇÕES DE GALPÃO */
-    window.handleGalpaoSubmit = async function(event) {
-      event.preventDefault();
-      const nome = document.getElementById('input-nome-galpao').value;
-      const dataEntrada = document.getElementById('input-data-entrada').value;
-      const aves = parseInt(document.getElementById('input-qtd-aves').value) || 0;
-      const idadeChegada = parseInt(document.getElementById('input-idade-chegada').value) || 0;
-      const pico = parseInt(document.getElementById('input-semana-pico').value) || 28;
-
-      try {
-        if (window.currentEditingId !== null) {
-          const docRef = doc(db, "galpoes", window.currentEditingId);
-          await updateDoc(docRef, { nome, dataEntrada, aves, idadeChegada, pico });
-          const selId = window.currentEditingId;
-          window.currentEditingId = null;
-          window.showGalpaoDetail(selId);
-        } else {
-          await addDoc(galpoesRef, { nome, dataEntrada, aves, idadeChegada, pico });
-          window.currentEditingId = null;
-          window.renderGalpoesList();
-        }
-      } catch (e) {
-        console.error("Erro ao salvar galpão: ", e);
-      }
-    };
-
-    window.showGalpaoForm = function(id = null) {
-      window.currentEditingId = id;
-      if (id !== null) {
-        const g = window.galpoesList.find(item => item.id === id);
-        if (g) {
-          document.getElementById('galpao-form-title').innerText = "Editar Galpão";
-          document.getElementById('input-nome-galpao').value = g.nome;
-          document.getElementById('input-data-entrada').value = g.dataEntrada;
-          document.getElementById('input-qtd-aves').value = g.aves;
-          document.getElementById('input-idade-chegada').value = g.idadeChegada || 0;
-          document.getElementById('input-semana-pico').value = g.pico;
-        }
-      } else {
-        document.getElementById('galpao-form-title').innerText = "Novo Galpão";
-        document.getElementById('input-nome-galpao').value = '';
-        document.getElementById('input-data-entrada').value = '';
-        document.getElementById('input-qtd-aves').value = '';
-        document.getElementById('input-idade-chegada').value = '0';
-        document.getElementById('input-semana-pico').value = '28';
-      }
-
-      document.getElementById('galpoes-empty-state').classList.add('hidden');
-      document.getElementById('galpoes-form-state').classList.remove('hidden');
-      document.getElementById('galpoes-list-state').classList.add('hidden');
-      document.getElementById('galpoes-detail-state').classList.add('hidden');
-    };
-
-    window.cancelarFormulario = function() {
-      if (window.galpoesList && window.galpoesList.length > 0) {
-        window.renderGalpoesList();
-      } else {
-        document.getElementById('galpoes-empty-state').classList.remove('hidden');
-        document.getElementById('galpoes-form-state').classList.add('hidden');
-      }
-    };
-
-    window.renderGalpoesList = function() {
-      if (!window.galpoesList || window.galpoesList.length === 0) {
-        document.getElementById('galpoes-empty-state').classList.remove('hidden');
-        document.getElementById('galpoes-form-state').classList.add('hidden');
-        document.getElementById('galpoes-list-state').classList.add('hidden');
-        document.getElementById('galpoes-detail-state').classList.add('hidden');
-        window.atualizarDashboard();
-        return;
-      }
-
-      const container = document.getElementById('galpoes-grid-container');
-      container.innerHTML = '';
-
-      window.galpoesList.forEach(g => {
-        const dataObj = new Date(g.dataEntrada);
-        const dataFormatada = dataObj.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-
-        const card = document.createElement('div');
-        card.className = "bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition cursor-pointer space-y-4";
-        card.onclick = () => window.showGalpaoDetail(g.id);
-
-        card.innerHTML = `
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-              <i data-lucide="warehouse" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h3 class="font-extrabold text-slate-800 text-sm">${g.nome}</h3>
-              <p class="text-xs text-slate-400">${g.idadeChegada} semanas (0 dias)</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-3 gap-2 text-center bg-slate-50 p-2.5 rounded-xl">
-            <div>
-              <i data-lucide="bird" class="w-3.5 h-3.5 mx-auto text-slate-400 mb-1"></i>
-              <h4 class="font-extrabold text-slate-800 text-sm">${g.aves}</h4>
-              <p class="text-[9px] text-slate-400">Aves</p>
-            </div>
-            <div>
-              <i data-lucide="skull" class="w-3.5 h-3.5 mx-auto text-slate-400 mb-1"></i>
-              <h4 class="font-extrabold text-slate-800 text-sm">0.0%</h4>
-              <p class="text-[9px] text-slate-400">Mortalidade</p>
-            </div>
-            <div>
-              <i data-lucide="trending-up" class="w-3.5 h-3.5 mx-auto text-slate-400 mb-1"></i>
-              <h4 class="font-extrabold text-slate-800 text-sm">${g.pico}</h4>
-              <p class="text-[9px] text-slate-400">Sem. Pico</p>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between pt-1 text-xs">
-            <span class="text-slate-400 text-[11px] flex items-center gap-1">
-              <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Entrada: ${dataFormatada}
-            </span>
-            <span class="bg-emerald-50 text-emerald-700 font-bold text-[10px] px-2 py-0.5 rounded-md border border-emerald-100 flex items-center gap-1">
-              <i data-lucide="leaf" class="w-3 h-3"></i> Inicial
-            </span>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-
-      document.getElementById('galpoes-empty-state').classList.add('hidden');
-      document.getElementById('galpoes-form-state').classList.add('hidden');
-      document.getElementById('galpoes-list-state').classList.remove('hidden');
-      document.getElementById('galpoes-detail-state').classList.add('hidden');
-
-      window.atualizarDashboard();
-      refreshIcons();
-    };
-
-    window.showGalpaoDetail = function(id) {
-      window.currentSelectedId = id;
-      const g = window.galpoesList.find(item => item.id === id);
-      if (!g) return;
-
-      const dataObj = new Date(g.dataEntrada);
-      const dataFormatada = dataObj.toLocaleDateString('pt-BR', { timeZone: 'UTC', day: '2-digit', month: 'long', year: 'numeric' });
-
-      document.getElementById('detail-galpao-nome').innerText = g.nome;
-      document.getElementById('nutricao-galpao-nome').innerText = g.nome;
-      document.getElementById('detail-aves').innerText = g.aves;
-      document.getElementById('detail-pico').innerText = `${g.pico} sem`;
-      document.getElementById('detail-galpao-sub').innerText = `${g.idadeChegada} semanas de vida • Entrada: ${dataFormatada}`;
-      document.getElementById('detail-idade-chegada').innerText = `${g.idadeChegada} semanas`;
-
-      const todayStr = new Date().toISOString().split('T')[0];
-      const prodHoje = window.producaoList
-        ? window.producaoList.filter(p => p.galpaoId === id && p.data === todayStr).reduce((acc, curr) => acc + curr.ovos, 0)
-        : 0;
-      const pctPostura = g.aves > 0 ? ((prodHoje / g.aves) * 100).toFixed(1) : '0,0';
-      document.getElementById('detail-taxa-postura').innerText = `${pctPostura.toString().replace('.', ',')}%`;
-
-      document.getElementById('galpoes-empty-state').classList.add('hidden');
-      document.getElementById('galpoes-form-state').classList.add('hidden');
-      document.getElementById('galpoes-list-state').classList.add('hidden');
-      document.getElementById('galpoes-detail-state').classList.remove('hidden');
-
-      refreshIcons();
-    };
-
-    window.editCurrentGalpao = function() {
-      if (window.currentSelectedId !== null) window.showGalpaoForm(window.currentSelectedId);
-    };
-
-    window.deleteCurrentGalpao = async function() {
-      if (confirm("Tem certeza que deseja excluir este galpão?")) {
-        try {
-          await deleteDoc(doc(db, "galpoes", window.currentSelectedId));
-          window.currentSelectedId = null;
-          window.renderGalpoesList();
-        } catch (e) {
-          console.error("Erro ao deletar galpão: ", e);
-        }
-      }
-    };
-
-    /* OPERAÇÕES DE DASHBOARD */
-    window.atualizarDashboard = function() {
-      const listAves = window.galpoesList || [];
-      const listProd = window.producaoList || [];
-
-      const totalAves = listAves.reduce((acc, curr) => acc + (curr.aves || 0), 0);
-      const dashPlantel = document.getElementById('dash-plantel');
-      if (dashPlantel) dashPlantel.innerText = totalAves;
-
-      const dashGalpoes = document.getElementById('dash-galpoes-ativos');
-      if (dashGalpoes) dashGalpoes.innerText = listAves.length;
-
-      const todayStr = new Date().toISOString().split('T')[0];
-      const prodHoje = listProd
-        .filter(p => p.data === todayStr)
-        .reduce((acc, curr) => acc + curr.ovos, 0);
-
-      const dashProdHoje = document.getElementById('dash-prod-hoje');
-      if (dashProdHoje) dashProdHoje.innerHTML = `${prodHoje} <span class="text-sm font-normal text-slate-600">ovos</span>`;
-
-      const pctHoje = totalAves > 0 ? ((prodHoje / totalAves) * 100).toFixed(1) : '0,0';
-      const dashPosturaHoje = document.getElementById('dash-postura-hoje');
-      if (dashPosturaHoje) dashPosturaHoje.innerText = `${pctHoje.toString().replace('.', ',')}%`;
-
-      const mesRef = window.dataReferenciaProducao.getMonth();
-      const anoRef = window.dataReferenciaProducao.getFullYear();
-
-      document.getElementById('label-mes-dashboard').innerText = `${mesesNomes[mesRef]} De ${anoRef}`;
-      document.getElementById('badge-mes-ref').innerText = `${mesesNomes[mesRef]} De ${anoRef}`;
-
-      const prodMesRef = listProd.filter(p => {
-        const d = new Date(p.data + 'T00:00:00');
-        return d.getMonth() === mesRef && d.getFullYear() === anoRef;
-      });
-
-      const totalOvosMes = prodMesRef.reduce((acc, curr) => acc + curr.ovos, 0);
-      const dashProdMensal = document.getElementById('dash-prod-mensal');
-      if (dashProdMensal) dashProdMensal.innerHTML = `${totalOvosMes} <span class="text-sm font-normal text-slate-600">ovos</span>`;
-    };
-
-    window.mudarMesDashboard = function(delta) {
-      window.dataReferenciaProducao.setMonth(window.dataReferenciaProducao.getMonth() + delta);
-      window.atualizarDashboard();
-    };
-
-    /* OPERAÇÕES DE PRODUÇÃO */
-    window.renderProducaoSection = function() {
-      if (!window.producaoList || window.producaoList.length === 0) {
-        document.getElementById('producao-empty-state').classList.remove('hidden');
-        document.getElementById('producao-form-state').classList.add('hidden');
-        document.getElementById('producao-list-state').classList.add('hidden');
-      } else {
-        window.renderProducaoListState();
-      }
-    };
-
-    window.handleProducaoSubmit = async function(event) {
-      event.preventDefault();
-      const galpaoId = document.getElementById('input-prod-galpao').value;
-      const obs = document.getElementById('input-prod-obs').value;
-
-      try {
-        if (window.currentEditingProducaoId !== null) {
-          const data = document.getElementById('input-prod-data').value;
-          const ovos = parseInt(document.getElementById('input-prod-ovos').value) || 0;
-          const quebrados = parseInt(document.getElementById('input-prod-quebrados').value) || 0;
-
-          const docRef = doc(db, "producao", window.currentEditingProducaoId);
-          await updateDoc(docRef, { galpaoId, data, ovos, quebrados, obs });
-        } else {
-          if (window.producaoTipoAbas === 'diario') {
-            const data = document.getElementById('input-prod-data').value;
-            const ovos = parseInt(document.getElementById('input-prod-ovos').value) || 0;
-            const quebrados = parseInt(document.getElementById('input-prod-quebrados').value) || 0;
-
-            await addDoc(producaoRef, { galpaoId, data, ovos, quebrados, obs });
-          } else {
-            const dataIniStr = document.getElementById('input-prod-dataini').value;
-            const dataFimStr = document.getElementById('input-prod-datafim').value;
-            const totalOvos = parseInt(document.getElementById('input-prod-ovos').value) || 0;
-            const inputQuebrados = document.getElementById('input-prod-quebrados');
-            const totalQuebrados = parseInt(inputQuebrados ? inputQuebrados.value : 0) || 0;
-
-            const dStart = new Date(dataIniStr + 'T00:00:00');
-            const dEnd = new Date(dataFimStr + 'T00:00:00');
-
-            if (dEnd < dStart) {
-              alert("A data final deve ser posterior ou igual à data inicial.");
-              return;
-            }
-
-            const diffTime = Math.abs(dEnd - dStart);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-
-            const ovosPorDia = Math.floor(totalOvos / diffDays);
-            let restoOvos = totalOvos % diffDays;
-
-            const quebradosPorDia = Math.floor(totalQuebrados / diffDays);
-            let restoQuebrados = totalQuebrados % diffDays;
-
-            let currDate = new Date(dStart);
-            for (let i = 0; i < diffDays; i++) {
-              const dateISO = currDate.toISOString().split('T')[0];
-              const qOvos = ovosPorDia + (restoOvos > 0 ? 1 : 0);
-              if (restoOvos > 0) restoOvos--;
-
-              const qQuebrados = quebradosPorDia + (restoQuebrados > 0 ? 1 : 0);
-              if (restoQuebrados > 0) restoQuebrados--;
-
-              await addDoc(producaoRef, {
-                galpaoId,
-                data: dateISO,
-                ovos: qOvos,
-                quebrados: qQuebrados,
-                obs: obs ? `${obs} (Lançamento em Lote)` : 'Lançamento em Lote'
-              });
-
-              currDate.setDate(currDate.getDate() + 1);
-            }
-          }
-        }
-        window.currentEditingProducaoId = null;
-        window.renderProducaoListState();
-      } catch (e) {
-        console.error("Erro ao registrar produção: ", e);
-      }
-    };
-
-    window.showProducaoForm = function(id = null) {
-      window.populateGalpoesDropdown();
-      window.currentEditingProducaoId = id;
-
-      const tabsTipo = document.getElementById('producao-tabs-tipo');
-      const title = document.getElementById('producao-form-title');
-      const sub = document.getElementById('producao-form-sub');
-      const btnVoltar = document.getElementById('btn-voltar-producao');
-
-      if (id !== null) {
-        const item = window.producaoList.find(p => p.id === id);
-        if (item) {
-          title.innerText = "Editar Produção";
-          sub.innerText = "Edite os dados do lançamento selecionado";
-          tabsTipo.classList.add('hidden');
-          btnVoltar.classList.remove('hidden');
-
-          document.getElementById('input-prod-galpao').value = item.galpaoId;
-          document.getElementById('input-prod-data').value = item.data;
-          document.getElementById('input-prod-ovos').value = item.ovos;
-          document.getElementById('input-prod-quebrados').value = item.quebrados || 0;
-          document.getElementById('input-prod-obs').value = item.obs || '';
-
-          window.switchProducaoTab('diario');
-        }
-      } else {
-        title.innerText = "Registrar Produção";
-        sub.innerText = "Registre a produção diária ou por período (retroativo)";
-        tabsTipo.classList.remove('hidden');
-        btnVoltar.classList.add('hidden');
-
-        document.getElementById('input-prod-galpao').value = (window.galpoesList && window.galpoesList.length > 0) ? window.galpoesList[0].id : '';
-        const todayStr = new Date().toISOString().split('T')[0];
-        document.getElementById('input-prod-data').value = todayStr;
-        document.getElementById('input-prod-dataini').value = '';
-        document.getElementById('input-prod-datafim').value = '';
-        document.getElementById('input-prod-ovos').value = '';
-        document.getElementById('input-prod-quebrados').value = '0';
-        document.getElementById('input-prod-obs').value = '';
-
-        window.switchProducaoTab('diario');
-      }
-
-      document.getElementById('producao-empty-state').classList.add('hidden');
-      document.getElementById('producao-form-state').classList.remove('hidden');
-      document.getElementById('producao-list-state').classList.add('hidden');
-      refreshIcons();
-    };
-
-    window.switchProducaoTab = function(tipo) {
-      window.producaoTipoAbas = tipo;
-      const tabDiario = document.getElementById('tab-diario');
-      const tabPeriodo = document.getElementById('tab-periodo');
-      const campoDataUnica = document.getElementById('campo-data-unica');
-      const camposIntervalo = document.getElementById('campos-intervalo-datas');
-      const inputDataUnica = document.getElementById('input-prod-data');
-      const inputDataIni = document.getElementById('input-prod-dataini');
-      const inputDataFim = document.getElementById('input-prod-datafim');
-      const lblOvos = document.getElementById('lbl-qtd-ovos');
-      const lblQuebrados = document.getElementById('lbl-qtd-quebrados');
-
-      if (tipo === 'diario') {
-        tabDiario.className = "w-1/2 py-1.5 rounded-lg bg-white text-slate-800 font-semibold shadow-sm transition text-center";
-        tabPeriodo.className = "w-1/2 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition text-center";
-        campoDataUnica.classList.remove('hidden');
-        camposIntervalo.classList.add('hidden');
-        inputDataUnica.required = true;
-        inputDataIni.required = false;
-        inputDataFim.required = false;
-        lblOvos.innerText = "Quantidade de Ovos Produzidos";
-        lblQuebrados.innerText = "Ovos Quebrados (opcional)";
-      } else {
-        tabPeriodo.className = "w-1/2 py-1.5 rounded-lg bg-white text-slate-800 font-semibold shadow-sm transition text-center";
-        tabDiario.className = "w-1/2 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition text-center";
-        campoDataUnica.classList.add('hidden');
-        camposIntervalo.classList.remove('hidden');
-        inputDataUnica.required = false;
-        inputDataIni.required = true;
-        inputDataFim.required = true;
-        lblOvos.innerText = "Total de Ovos no Período";
-        lblQuebrados.innerText = "Total de Ovos Quebrados (opcional)";
-      }
-    };
-
-    window.populateGalpoesDropdown = function() {
-      const select = document.getElementById('input-prod-galpao');
-      select.innerHTML = '<option value="">Selecione o galpão</option>';
-      if (window.galpoesList) {
-        window.galpoesList.forEach(g => {
-          const opt = document.createElement('option');
-          opt.value = g.id;
-          opt.innerText = g.nome;
-          select.appendChild(opt);
-        });
-      }
-    };
-
-    window.cancelarFormProducao = function() {
-      window.currentEditingProducaoId = null;
-      window.renderProducaoSection();
-    };
-
-    window.renderProducaoListState = function() {
-      document.getElementById('producao-empty-state').classList.add('hidden');
-      document.getElementById('producao-form-state').classList.add('hidden');
-      document.getElementById('producao-list-state').classList.remove('hidden');
-
-      window.atualizarMetricasProducao();
-      window.renderTabelaProducao();
-      refreshIcons();
-    };
-
-    window.atualizarMetricasProducao = function() {
-      const todayStr = new Date().toISOString().split('T')[0];
-      const listProd = window.producaoList || [];
-
-      const prodHoje = listProd
-        .filter(p => p.data === todayStr)
-        .reduce((acc, curr) => acc + curr.ovos, 0);
-      document.getElementById('card-prod-hoje').innerHTML = `${prodHoje} <span class="text-xs font-normal text-slate-500">ovos</span>`;
-
-      const dataHoje = new Date();
-      const seteDiasAtras = new Date();
-      seteDiasAtras.setDate(dataHoje.getDate() - 6);
-
-      const prod7Dias = listProd.filter(p => {
-        const d = new Date(p.data + 'T00:00:00');
-        return d >= seteDiasAtras && d <= dataHoje;
-      }).reduce((acc, curr) => acc + curr.ovos, 0);
-
-      document.getElementById('card-prod-7dias').innerHTML = `${prod7Dias} <span class="text-xs font-normal text-slate-500">ovos</span>`;
-
-      const mesRef = window.dataReferenciaProducao.getMonth();
-      const anoRef = window.dataReferenciaProducao.getFullYear();
-
-      const prodMesRef = listProd.filter(p => {
-        const d = new Date(p.data + 'T00:00:00');
-        return d.getMonth() === mesRef && d.getFullYear() === anoRef;
-      });
-
-      const totalOvosMes = prodMesRef.reduce((acc, curr) => acc + curr.ovos, 0);
-      const diasComRegistro = new Set(prodMesRef.map(p => p.data)).size || 1;
-      const mediaDiaria = Math.round(totalOvosMes / diasComRegistro);
-
-      document.getElementById('card-prod-media').innerHTML = `${mediaDiaria} <span class="text-xs font-normal text-slate-500">ovos</span>`;
-
-      const totalAves = (window.galpoesList || []).reduce((acc, curr) => acc + curr.aves, 0);
-
-      const pctHoje = totalAves > 0 ? ((prodHoje / totalAves) * 100).toFixed(1) : '0,0';
-      document.getElementById('card-prod-postura-hoje').innerText = `${pctHoje.toString().replace('.', ',')}%`;
-
-      const pctMes = (totalAves > 0 && prodMesRef.length > 0) ? ((totalOvosMes / (totalAves * diasComRegistro)) * 100).toFixed(1) : '0,0';
-      document.getElementById('card-prod-postura-mes').innerText = `${pctMes.toString().replace('.', ',')}%`;
-    };
-
-    window.renderTabelaProducao = function() {
-      const tbody = document.getElementById('tabela-producao-body');
-      tbody.innerHTML = '';
-
-      const mesRef = window.dataReferenciaProducao.getMonth();
-      const anoRef = window.dataReferenciaProducao.getFullYear();
-
-      document.getElementById('label-mes-producao').innerText = `${mesesNomes[mesRef]} De ${anoRef}`;
-
-      const listProd = window.producaoList || [];
-      const filtrados = listProd.filter(p => {
-        const d = new Date(p.data + 'T00:00:00');
-        return d.getMonth() === mesRef && d.getFullYear() === anoRef;
-      }).sort((a, b) => new Date(b.data) - new Date(a.data));
-
-      if (filtrados.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">Nenhum registro encontrado para este mês.</td></tr>`;
-        return;
-      }
-
-      filtrados.forEach(p => {
-        const galpao = (window.galpoesList || []).find(g => g.id === p.galpaoId);
-        const nomeGalpao = galpao ? galpao.nome : 'Galpão';
-        const dObj = new Date(p.data + 'T00:00:00');
-        const dataFmt = dObj.toLocaleDateString('pt-BR');
-
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-50/80 transition";
-        tr.innerHTML = `
-          <td class="py-3 px-3 font-semibold text-slate-800">${dataFmt}</td>
-          <td class="py-3 px-3 font-medium text-slate-600">${nomeGalpao}</td>
-          <td class="py-3 px-3 text-center font-bold text-emerald-700">${p.ovos}</td>
-          <td class="py-3 px-3 text-center text-slate-500">${p.quebrados || 0}</td>
-          <td class="py-3 px-3 text-slate-400 text-[11px] max-w-xs truncate">${p.obs || '-'}</td>
-          <td class="py-3 px-3 text-right">
-            <div class="inline-flex items-center gap-2">
-              <button onclick="showProducaoForm('${p.id}')" class="text-slate-400 hover:text-emerald-700 transition">
-                <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
-              </button>
-              <button onclick="deleteProducao('${p.id}')" class="text-slate-400 hover:text-red-600 transition">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      refreshIcons();
-    };
-
-    window.mudarMesProducao = function(delta) {
-      window.dataReferenciaProducao.setMonth(window.dataReferenciaProducao.getMonth() + delta);
-      window.renderTabelaProducao();
-      window.atualizarMetricasProducao();
-    };
-
-    window.deleteProducao = async function(id) {
-      if (confirm("Deseja realmente remover este registro de produção?")) {
-        try {
-          await deleteDoc(doc(db, "producao", id));
-          if (window.producaoList.length === 0) {
-            window.renderProducaoSection();
-          } else {
-            window.renderProducaoListState();
-          }
-        } catch (e) {
-          console.error("Erro ao deletar produção: ", e);
-        }
-      }
-    };
-
-    window.exportarExcelProducao = function() {
-      const mesRef = window.dataReferenciaProducao.getMonth();
-      const anoRef = window.dataReferenciaProducao.getFullYear();
-
-      const listProd = window.producaoList || [];
-      const filtrados = listProd.filter(p => {
-        const d = new Date(p.data + 'T00:00:00');
-        return d.getMonth() === mesRef && d.getFullYear() === anoRef;
-      }).sort((a, b) => new Date(b.data) - new Date(a.data));
-
-      if (filtrados.length === 0) {
-        alert("Não existem dados de produção para exportar neste mês selecionado.");
-        return;
-      }
-
-      // Cabeçalho do CSV
-      let csvContent = "Data;Galpão;Ovos Produzidos;Ovos Quebrados;Observações\n";
-
-      filtrados.forEach(p => {
-        const galpao = (window.galpoesList || []).find(g => g.id === p.galpaoId);
-        const nomeGalpao = galpao ? galpao.nome : 'Galpão';
-        const dObj = new Date(p.data + 'T00:00:00');
-        const dataFmt = dObj.toLocaleDateString('pt-BR');
-        const obs = (p.obs || '').replace(/;/g, ' ').replace(/\n/g, ' ');
-
-        csvContent += `"${dataFmt}";"${nomeGalpao}";${p.ovos};${p.quebrados || 0};"${obs}"\n`;
-      });
-
-      // Adiciona BOM (Byte Order Mark) UTF-8 para garantir acentuação correta no Excel
-      const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      
-      const nomeMes = mesesNomes[mesRef].toLowerCase();
-      link.setAttribute("href", url);
-      link.setAttribute("download", `producao_${nomeMes}_${anoRef}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    };
-
-    // Render Inicial dos Ícones Lucide
-    document.addEventListener('DOMContentLoaded', () => {
-      refreshIcons();
-    });
-  </script>
 </body>
 </html>
